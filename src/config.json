@@ -1,0 +1,15 @@
+{
+	"Gateway": "10.0.105.3",
+	"UserName": "student",
+	"Password": "Zaq1Xsw2",
+	"Computers": [
+		{
+			"Label": "100 - SimHost",
+			"IP": "192.168.0.100",
+			"Services": {
+				"VNC": { "Port": 7100 },
+				"RDP": { "Port": 6100 }
+			}
+		}
+	]
+}
