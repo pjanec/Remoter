@@ -8,7 +8,7 @@ namespace Remoter
 {
     namespace Config
     {
-        public class Main
+        public class Session
         {
             public string Gateway;
             public string UserName;
@@ -19,6 +19,7 @@ namespace Remoter
         
         public class Service
         {
+            public string Name;
             public int Port;
         }
 
@@ -40,7 +41,7 @@ namespace Remoter
         {
         }
 
-        public class SCP : AuthenticatedService
+        public class WinSCP : AuthenticatedService
         {
         }
 
@@ -49,14 +50,16 @@ namespace Remoter
             public VNC VNC;
             public RDP RDP;
             public SSH SSH;
-            public SCP SCP;
+            public WinSCP WinSCP;
+
+            //List<Service> 
 
             public Service ByName(string name)
             {
                 if( name=="VNC" ) return VNC;
                 if( name=="RDP" ) return RDP;
                 if( name=="SSH" ) return SSH;
-                if( name=="SCP" ) return SCP;
+                if( name=="WinSCP" ) return WinSCP;
                 return null;
             }
         }
@@ -67,7 +70,29 @@ namespace Remoter
         {
             public string Label;
             public string IP;
-            public Services Services;
+            public List<Service> Services = new List<Service>(); // just those configured in the config
+        }
+
+        public class Applications
+        {
+            public List<App> Apps;
+            public List<string> Services;
+        }
+
+        public class App
+        {
+            public string Name;
+            public string ExeFullPath;
+            public string CmdLineArgs;
+            public string StartupDir;
+            //public bool AdoptIfAlreadyRunning;
+            //public EWindowStyle WindowStyle = EWindowStyle.NotSet;
+            //public Dictionary<string, string> EnvVarsToSet = new Dictionary<string, string>();
+            //public Dictionary<string, string> LocalVarsToSet = new Dictionary<string, string>();
+            //public string EnvVarPathToPrepend;
+            //public string EnvVarPathToAppend;
+            //public string PriorityClass; // idle, belownormal, normal, abovenormal, high, realtime; empty = normal
+            //public bool KillTree;
         }
 
     }

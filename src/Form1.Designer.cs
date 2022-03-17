@@ -32,20 +32,16 @@ namespace Remoter
 			this.btnLoad = new System.Windows.Forms.Button();
 			this.grdComputers = new System.Windows.Forms.DataGridView();
 			this.CompName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.VNC = new System.Windows.Forms.DataGridViewImageColumn();
-			this.RDP = new System.Windows.Forms.DataGridViewImageColumn();
-			this.SSH = new System.Windows.Forms.DataGridViewImageColumn();
-			this.SCP = new System.Windows.Forms.DataGridViewImageColumn();
 			this.btnStart = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.grdComputers)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btnLoad
 			// 
-			this.btnLoad.Location = new System.Drawing.Point(15, 10);
-			this.btnLoad.Margin = new System.Windows.Forms.Padding(6);
+			this.btnLoad.Location = new System.Drawing.Point(12, 8);
+			this.btnLoad.Margin = new System.Windows.Forms.Padding(5);
 			this.btnLoad.Name = "btnLoad";
-			this.btnLoad.Size = new System.Drawing.Size(139, 52);
+			this.btnLoad.Size = new System.Drawing.Size(114, 43);
 			this.btnLoad.TabIndex = 7;
 			this.btnLoad.Text = "Load";
 			this.btnLoad.UseVisualStyleBackColor = true;
@@ -58,17 +54,13 @@ namespace Remoter
 			this.grdComputers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
 			this.grdComputers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.grdComputers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.CompName,
-            this.VNC,
-            this.RDP,
-            this.SSH,
-            this.SCP});
-			this.grdComputers.Location = new System.Drawing.Point(15, 72);
-			this.grdComputers.Margin = new System.Windows.Forms.Padding(6);
+            this.CompName});
+			this.grdComputers.Location = new System.Drawing.Point(12, 60);
+			this.grdComputers.Margin = new System.Windows.Forms.Padding(5);
 			this.grdComputers.Name = "grdComputers";
 			this.grdComputers.RowHeadersVisible = false;
 			this.grdComputers.RowHeadersWidth = 72;
-			this.grdComputers.Size = new System.Drawing.Size(444, 288);
+			this.grdComputers.Size = new System.Drawing.Size(524, 240);
 			this.grdComputers.TabIndex = 9;
 			this.grdComputers.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdComputers_CellEnter);
 			this.grdComputers.CurrentCellDirtyStateChanged += new System.EventHandler(this.grdComputers_CurrentCellDirtyStateChanged);
@@ -81,53 +73,26 @@ namespace Remoter
 			this.CompName.MinimumWidth = 9;
 			this.CompName.Name = "CompName";
 			// 
-			// VNC
-			// 
-			this.VNC.FillWeight = 15F;
-			this.VNC.HeaderText = "VNC";
-			this.VNC.MinimumWidth = 9;
-			this.VNC.Name = "VNC";
-			// 
-			// RDP
-			// 
-			this.RDP.FillWeight = 15F;
-			this.RDP.HeaderText = "RDP";
-			this.RDP.MinimumWidth = 9;
-			this.RDP.Name = "RDP";
-			// 
-			// SSH
-			// 
-			this.SSH.FillWeight = 15F;
-			this.SSH.HeaderText = "SSH";
-			this.SSH.MinimumWidth = 9;
-			this.SSH.Name = "SSH";
-			// 
-			// SCP
-			// 
-			this.SCP.FillWeight = 15F;
-			this.SCP.HeaderText = "SCP";
-			this.SCP.MinimumWidth = 9;
-			this.SCP.Name = "SCP";
-			// 
 			// btnStart
 			// 
-			this.btnStart.Location = new System.Drawing.Point(320, 10);
-			this.btnStart.Margin = new System.Windows.Forms.Padding(6);
+			this.btnStart.Location = new System.Drawing.Point(422, 7);
+			this.btnStart.Margin = new System.Windows.Forms.Padding(5);
 			this.btnStart.Name = "btnStart";
-			this.btnStart.Size = new System.Drawing.Size(139, 52);
+			this.btnStart.Size = new System.Drawing.Size(114, 43);
 			this.btnStart.TabIndex = 10;
 			this.btnStart.Text = "Start";
 			this.btnStart.UseVisualStyleBackColor = true;
+			this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
 			// 
 			// frmMain
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(497, 386);
+			this.ClientSize = new System.Drawing.Size(550, 325);
 			this.Controls.Add(this.btnStart);
 			this.Controls.Add(this.grdComputers);
 			this.Controls.Add(this.btnLoad);
-			this.Margin = new System.Windows.Forms.Padding(6);
+			this.Margin = new System.Windows.Forms.Padding(5);
 			this.Name = "frmMain";
 			this.Text = "Remoter";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
@@ -140,12 +105,8 @@ namespace Remoter
         #endregion
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.DataGridView grdComputers;
-		private System.Windows.Forms.DataGridViewTextBoxColumn CompName;
-		private System.Windows.Forms.DataGridViewImageColumn VNC;
-		private System.Windows.Forms.DataGridViewImageColumn RDP;
-		private System.Windows.Forms.DataGridViewImageColumn SSH;
-		private System.Windows.Forms.DataGridViewImageColumn SCP;
 		private System.Windows.Forms.Button btnStart;
+		private System.Windows.Forms.DataGridViewTextBoxColumn CompName;
 	}
 }
 

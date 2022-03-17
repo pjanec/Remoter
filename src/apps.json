@@ -1,0 +1,41 @@
+{
+  "Apps": [
+    {
+      "Name": "VNC",
+      "ExeFullPath": "C:\\tvnviewer.exe",
+      "CmdLineArgs": "127.0.0.1:%PORT%",
+      "StartupDir": "",
+    },
+    {
+      "Name": "RDP",
+      "ExeFullPath": "%windir%\\system32\\mstsc.exe",
+      "CmdLineArgs": "127.0.0.1:%PORT%",
+      "StartupDir": "",
+    },
+    {
+      "Name": "SSH",
+      "ExeFullPath": "ssh.exe",
+      "CmdLineArgs": "127.0.0.1:%PORT%",
+      "StartupDir": "",
+    },
+    {
+      "Name": "WinSCP",
+      "ExeFullPath": "scp.exe",
+      "CmdLineArgs": "127.0.0.1:%PORT%",
+      "StartupDir": "",
+    },
+    {
+      "Name": "plink",
+      "ExeFullPath": "plink.exe",
+      "CmdLineArgs": "127.0.0.1:%PORT%",
+      "StartupDir": "",
+    },
+  ],
+
+  "Services": [
+    "VNC",
+    "WinSCP",
+    "RDP",
+    "SSH",
+  ]
+}

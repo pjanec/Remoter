@@ -15,32 +15,50 @@ namespace Remoter
 	public partial class frmMain : Form
     {
 		const int gridColName = 0;
-		const int gridColVNC = 1;
-		const int gridColRDP = 2;
-		const int gridColSSH = 3;
-		const int gridColSCP = 4;
-		const int gridColMax = gridColSCP;
 
-        public Config.Main _cfg;
+
+        //Context Context = new Context();
+
+        public Config.Session _cfg;
         List<Computer> Computers = new List<Computer>();
+        Forwarder Forwarder;
+        int LocalPortBase;
 
-        public void LoadFromFile( string fileName )
+        public void LoadSessionConfig( string fileName )
         {
-            _cfg = JsonConvert.DeserializeObject<Config.Main>( System.IO.File.ReadAllText( fileName ) );
+            LocalPortBase = 40000;
+
+            _cfg = JsonConvert.DeserializeObject<Config.Session>( System.IO.File.ReadAllText( fileName ) );
+
+            // define columns
+            foreach( var app in Applications.ServiceApps )
+            {
+                var col = new System.Windows.Forms.DataGridViewImageColumn();
+			    col.FillWeight = 15F;
+			    col.MinimumWidth = 9;
+			    col.Name = app.Name;
+			    col.HeaderText = app.Name;
+                grdComputers.Columns.Add( col );
+            }
+
+
+            // fill columns for each computer in the session
             foreach( var c in _cfg.Computers )
             {
-                var items = new object[gridColMax+1];
+                var items = new object[grdComputers.Columns.Count];
                 
                 items[gridColName] = $"{c.Label}";
 
                 var svcs = c.Services;
-                if( svcs == null ) continue;
+                if( svcs == null ) continue; // no services defined for a computer?
 
                 var comp = new Computer() { Cfg = c };
-                AddService( comp, items, svcs.VNC != null, gridColVNC, Services.VNC );
-                AddService( comp, items, svcs.RDP != null, gridColRDP, Services.RDP );
-                AddService( comp, items, svcs.SSH != null, gridColSSH, Services.SSH );
-                AddService( comp, items, svcs.SCP != null, gridColSCP, Services.SCP );
+                int gridCol = gridColName+1;
+                foreach( var app in Applications.ServiceApps )
+                {
+                    AddService( comp, items, gridCol, app );
+                    gridCol++;
+                }
 
                 var gridRowIdx = grdComputers.Rows.Add( items );
 
@@ -50,18 +68,36 @@ namespace Remoter
 
         }
 
-        void AddService( Computer comp, object[] gridColItems, bool isConfigured, int gridColIndex, SvcDef svcDef )
+    
+        void AddService( Computer comp, object[] gridColItems, int gridColIndex, App app )
         {
+            var serviceConf = comp.Cfg.Services.Find( (x) => x.Name == app.Name );
+
+            bool isConfigured = serviceConf != null;
+
             if( isConfigured )
             {
-                gridColItems[gridColIndex] = ResizeImage( new Bitmap( svcDef.Image ), new Size( 20, 20 ) );
-                comp.Services.Add( new Service() { SvcDef = svcDef, GridColIndex=gridColIndex } );
+                gridColItems[gridColIndex] = ResizeImage( new Bitmap( app.Image ), new Size( 20, 20 ) );
+
+                comp.Services.Add(
+                    new ServiceApp()
+                    {
+                        ServiceConf = serviceConf,
+                        LocalPort = ++LocalPortBase,
+                        App = app,
+                        GridColIndex=gridColIndex
+                    }
+                );
             }
             else
             {
                 gridColItems[gridColIndex] = ResizeImage( new Bitmap( Resource1.Empty ), new Size( 20, 20 ) );
             }
+        }
 
+        
+        void StartForwarding()
+        {
         }
 
 
@@ -76,7 +112,8 @@ namespace Remoter
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            LoadFromFile("config.json");
+            LoadSessionConfig("session.json");
+            Forwarder = new Forwarder( Computers );
         }
 
 		static Bitmap ResizeImage( Bitmap imgToResize, Size size )
@@ -124,13 +161,13 @@ namespace Remoter
 
         }
 
-        void OnStartServiceClicked( Computer comp, Service svc )
+        void OnStartServiceClicked( Computer comp, ServiceApp svc )
         {
             MessageBox.Show($"Clicked {comp.IP} {svc.Name}");
 
             if( svc.Launcher == null || !svc.Launcher.Running )
             {
-                svc.Launcher = svc.SvcDef.LauncherBuilder( comp );
+                svc.Launcher = svc.App.LauncherBuilder( comp );
                 try
                 {
                     svc.Launcher.Launch();
@@ -188,6 +225,12 @@ namespace Remoter
 		private void frmMain_FormClosed( object sender, FormClosedEventArgs e )
 		{
             KillServices();
+            Forwarder.Dispose();
+		}
+
+		private void btnStart_Click( object sender, EventArgs e )
+		{
+            Forwarder.Start();
 		}
 	}
 

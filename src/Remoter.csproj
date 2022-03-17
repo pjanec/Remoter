@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDef.cs" />
-    <Compile Include="Computer.cs" />
+    <Compile Include="RuntimeStructs.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -59,6 +59,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forwarder.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="Program.cs" />
@@ -68,8 +69,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
-    <Compile Include="Service.cs" />
-    <Compile Include="Services.cs" />
+    <Compile Include="Applications.cs" />
     <Compile Include="SoftKiller.cs" />
     <Compile Include="Tools.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -86,9 +86,13 @@
     </Compile>
     <EmbeddedResource Include="Resource1.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resource1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="config.json">
+    <None Include="apps.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="session.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -109,19 +113,21 @@
     <None Include="Resources\play.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\RDP.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SCP.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SSH.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\VNC.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icons\RDP.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\WinSCP.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\SSH.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\VNC.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
