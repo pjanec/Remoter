@@ -2,33 +2,68 @@
 	"Gateway": "10.0.105.3",
 	"UserName": "student",
 	"Password": "Zaq1Xsw2",
+
 	"Computers": [
 		{
 			"Label": "100 - SimHost",
 			"IP": "192.168.0.100",
+
 			"Services": [
 				{
 					"Name": "VNC",
-					"Port": 7100
+					"Port": 5900,
+					"UserName": "student",
+					"Password": "Zaq1XSw2"
 				},
 				{
 					"Name": "RDP",
-					"Port": 7100
+					"Port": 3618
 				},
+				{
+					"Name": "SSH",
+					"Port": 22
+				}
+			],
+
+			"Apps": [
+				{
+					"Name": "TightVNC Viewer"
+				},
+				{
+					"Name": "Remote Desktop Client"
+				},
+				{
+					"Name": "WinSCP"
+				}
 			]
+
 		},
 		{
-			"Label": "101 - bla",
+			"Label": "101 - SIMSERVER",
 			"IP": "192.168.0.101",
+
 			"Services": [
 				{
 					"Name": "VNC",
-					"Port": 7100
+					"Port": 5900
 				},
 				{
-					"Name": "WinSCP",
-					"Port": 7200
+					"Name": "RDBG",
+					"Port": 4024
 				},
+				{
+					"Name": "DIRIGENT",
+					"Port": 5045
+				}
+			],
+
+			"Apps": [
+				{
+					"Name": "TightVNC Viewer"
+				},
+				{
+					"Name": "Dirigent Client",
+				}
 			]
 		}
 	]

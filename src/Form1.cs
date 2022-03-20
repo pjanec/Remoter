@@ -17,21 +17,18 @@ namespace Remoter
 		const int gridColName = 0;
 
 
-        //Context Context = new Context();
+        GlobalContext Context = new GlobalContext();
 
-        public Config.Session _cfg;
-        List<Computer> Computers = new List<Computer>();
-        Forwarder Forwarder;
-        int LocalPortBase;
+        public GlobalContext Ctx => GlobalContext.Instance;
+        public Session Session;
+        public List<Computer> Computers => Session.Computers;
 
-        public void LoadSessionConfig( string fileName )
+        public void InitSession( string fileName )
         {
-            LocalPortBase = 40000;
-
-            _cfg = JsonConvert.DeserializeObject<Config.Session>( System.IO.File.ReadAllText( fileName ) );
+            Session = new Session( fileName );
 
             // define columns
-            foreach( var app in Applications.ServiceApps )
+            foreach( var app in Applications.Apps )
             {
                 var col = new System.Windows.Forms.DataGridViewImageColumn();
 			    col.FillWeight = 15F;
@@ -41,66 +38,37 @@ namespace Remoter
                 grdComputers.Columns.Add( col );
             }
 
-
-            // fill columns for each computer in the session
-            foreach( var c in _cfg.Computers )
+            // on column per service app
+            foreach( var comp in Computers )
             {
                 var items = new object[grdComputers.Columns.Count];
                 
-                items[gridColName] = $"{c.Label}";
+                items[gridColName] = $"{comp.Conf.Label}";
 
-                var svcs = c.Services;
-                if( svcs == null ) continue; // no services defined for a computer?
-
-                var comp = new Computer() { Cfg = c };
                 int gridCol = gridColName+1;
-                foreach( var app in Applications.ServiceApps )
+                foreach( var app in Applications.Apps )
                 {
-                    AddService( comp, items, gridCol, app );
+                    var consumer = comp.Apps.Find( (x) => app.Name == x.Name );    
+                    if( consumer != null ) // is app configured for this computer?
+                    {
+                        items[gridCol] = Tools.ResizeImage( new Bitmap( app.Image ), new Size( 20, 20 ) );
+                        consumer.GridColIndex = gridCol;
+                    }
+                    else
+                    {
+                        items[gridCol] = Tools.ResizeImage( new Bitmap( Resource1.Empty ), new Size( 20, 20 ) );
+                    }
+
                     gridCol++;
                 }
 
                 var gridRowIdx = grdComputers.Rows.Add( items );
 
                 comp.GridRowIdx = gridRowIdx;
-                Computers.Add( comp );
             }
 
         }
-
     
-        void AddService( Computer comp, object[] gridColItems, int gridColIndex, App app )
-        {
-            var serviceConf = comp.Cfg.Services.Find( (x) => x.Name == app.Name );
-
-            bool isConfigured = serviceConf != null;
-
-            if( isConfigured )
-            {
-                gridColItems[gridColIndex] = ResizeImage( new Bitmap( app.Image ), new Size( 20, 20 ) );
-
-                comp.Services.Add(
-                    new ServiceApp()
-                    {
-                        ServiceConf = serviceConf,
-                        LocalPort = ++LocalPortBase,
-                        App = app,
-                        GridColIndex=gridColIndex
-                    }
-                );
-            }
-            else
-            {
-                gridColItems[gridColIndex] = ResizeImage( new Bitmap( Resource1.Empty ), new Size( 20, 20 ) );
-            }
-        }
-
-        
-        void StartForwarding()
-        {
-        }
-
-
         public frmMain()
         {
             InitializeComponent();
@@ -112,25 +80,8 @@ namespace Remoter
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            LoadSessionConfig("session.json");
-            Forwarder = new Forwarder( Computers );
+            InitSession("session.json");
         }
-
-		static Bitmap ResizeImage( Bitmap imgToResize, Size size )
-		{
-			try
-			{
-				Bitmap b = new Bitmap( size.Width, size.Height );
-				using( Graphics g = Graphics.FromImage( b ) )
-				{
-					g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-					g.DrawImage( imgToResize, 0, 0, size.Width, size.Height );
-				}
-				return b;
-			}
-			catch { }
-			return null;
-		}
 
         private void grdComputers_MouseClick(object sender, MouseEventArgs e)
         {
@@ -148,7 +99,7 @@ namespace Remoter
                     var comp = (from x in Computers where x.GridRowIdx==currentRow select x).FirstOrDefault();
                     if( comp != null )
                     {
-                        var svc = (from x in comp.Services where x.GridColIndex == currentCol select x).FirstOrDefault();
+                        var svc = (from x in comp.Apps where x.GridColIndex == currentCol select x).FirstOrDefault();
                         if( svc != null )
                         {
                             // handle the click
@@ -161,7 +112,7 @@ namespace Remoter
 
         }
 
-        void OnStartServiceClicked( Computer comp, ServiceApp svc )
+        void OnStartServiceClicked( Computer comp, ConsumerApp svc )
         {
             MessageBox.Show($"Clicked {comp.IP} {svc.Name}");
 
@@ -206,31 +157,14 @@ namespace Remoter
             datagridview.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
 
-        void KillServices()
-        {
-            foreach( var c in Computers )
-            {
-                foreach( var s in c.Services )
-                {
-                    if( s.Launcher != null )
-                    {
-                        s.Launcher.Kill();
-                    }
-                }
-            }
-            // give time for services to dies
-            Thread.Sleep(1000);
-        }
-
 		private void frmMain_FormClosed( object sender, FormClosedEventArgs e )
 		{
-            KillServices();
-            Forwarder.Dispose();
+            Session?.Dispose();
 		}
 
 		private void btnStart_Click( object sender, EventArgs e )
 		{
-            Forwarder.Start();
+            Session?.Start();
 		}
 	}
 

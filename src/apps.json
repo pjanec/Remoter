@@ -1,41 +1,52 @@
 {
   "Apps": [
     {
-      "Name": "VNC",
+      "Name": "TightVNC Viewer",
+      "IconFile": "Icons\\VNC.png",
+      "Service": "VNC",
       "ExeFullPath": "C:\\tvnviewer.exe",
-      "CmdLineArgs": "127.0.0.1:%PORT%",
-      "StartupDir": "",
+      "CmdLineArgs": "127.0.0.1:%SVC_PORT%",
+      "StartupDir": ""
     },
     {
-      "Name": "RDP",
+      "Name": "Remote Desktop Client",
+      "Service": "RDP",
+      "IconFile": "Icons\\RDP.png",
       "ExeFullPath": "%windir%\\system32\\mstsc.exe",
-      "CmdLineArgs": "127.0.0.1:%PORT%",
-      "StartupDir": "",
+      "CmdLineArgs": "127.0.0.1:%SVC_PORT%",
+      "StartupDir": ""
     },
     {
-      "Name": "SSH",
+      "Name": "SSH Client",
+      "IconFile": "Icons\\SSH.png",
+      "Service": "SSH",
       "ExeFullPath": "ssh.exe",
-      "CmdLineArgs": "127.0.0.1:%PORT%",
-      "StartupDir": "",
+      "CmdLineArgs": "127.0.0.1 -P %SVC_PORT% -l %SVC_USERNAME% -pw %SVC_PASSWORD% -no-antispoof",
+      "StartupDir": ""
     },
     {
       "Name": "WinSCP",
+      "IconFile": "Icons\\WinSCP.png",
+      "Service": "SSH",
       "ExeFullPath": "scp.exe",
-      "CmdLineArgs": "127.0.0.1:%PORT%",
-      "StartupDir": "",
+      "CmdLineArgs": "127.0.0.1:%SVC_PORT%",
+      "StartupDir": ""
+    },
+    {
+      "Name": "Dirigent Client",
+      "IconFile": "Icons\\Dirigent.png",
+      "Service": "DIRIGENT",
+      "ExeFullPath": "Dirigent.Agent.exe",
+      "CmdLineArgs": "--masterIp 127.0.0.1 --masterPort %SVC_PORT% --isMaster 0 --mode trayGui --machineId %COMPUTERNAME%_%NEW_GUID% ",
+      "StartupDir": ""
     },
     {
       "Name": "plink",
+      "Service": "SSH",
       "ExeFullPath": "plink.exe",
-      "CmdLineArgs": "127.0.0.1:%PORT%",
-      "StartupDir": "",
-    },
-  ],
-
-  "Services": [
-    "VNC",
-    "WinSCP",
-    "RDP",
-    "SSH",
+      "CmdLineArgs": "127.0.0.1:%SVC_PORT%",
+      "StartupDir": ""
+    }
   ]
+
 }

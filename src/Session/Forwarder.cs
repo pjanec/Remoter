@@ -9,12 +9,13 @@ namespace Remoter
 	public class Forwarder
 	{
 		Launcher Launcher;
-		List<Computer> Computers;
+		GlobalContext Ctx => GlobalContext.Instance;
+		Session _session;
 
-		public Forwarder(List<Computer> computers)
+		public Forwarder( Session session )
 		{
-			Computers = computers;
-			var app = Applications.GetByName("plink");
+			_session = session;
+			var app = Applications.ByName("plink");
 			if( app == null ) return;
 			Launcher = new Launcher( app.AppDef, null, new Dictionary<string, string>() );
 		}
@@ -30,15 +31,13 @@ namespace Remoter
 			var sb = new StringBuilder();
 			// 
 			//&plink.exe 10.0.103.7 -l student -pw Zaq1Xsw2 -P 22 -no-antispoof `
-			//sb.Append( $"{Context.SessionConf.Gateway} -l {Context.SessionConf.UserName} -pw {Context.SessionConf.Password} -P 22 -no-antispoof ");
-			foreach( var comp in Computers )
+			sb.Append( $"{_session.Conf.Gateway} -l {_session.Conf.UserName} -pw {_session.Conf.Password} -P 22 -no-antispoof ");
+			foreach( var comp in _session.Computers )
 			{
-				foreach( var app in comp.Services )
+				foreach( var svc in comp.Services )
 				{
-					var svcCfg = app.ServiceConf;
-
 					// -L 7101:192.168.0.101:5900 
-					var fwdArg = $"-L {app.LocalPort}:{comp.IP}:{svcCfg.Port} ";
+					var fwdArg = $"-L {svc.LocalPort}:{comp.IP}:{svc.Conf.Port} ";
 					sb.Append( fwdArg );
 
 				}

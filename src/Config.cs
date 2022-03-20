@@ -17,52 +17,30 @@ namespace Remoter
         }
 
         
+        /// <summary>
+        /// Network service runningn on a port we want to access via port forwarding
+        /// </summary>
         public class Service
         {
             public string Name;
             public int Port;
-        }
-
-        public class AuthenticatedService : Service
-        {
             public string UserName;
             public string Password;
         }
 
-        public class VNC : AuthenticatedService
+        public class ConsumerApp
         {
+            /// <summary>
+            /// Type name of the app, used to reference this app in the session config
+            /// </summary>
+            public string Name;
+            
+            /// <summary>
+            /// What service is this app using
+            /// </summary>
+            public string Service;
         }
 
-        public class RDP : AuthenticatedService
-        {
-        }
-
-        public class SSH : AuthenticatedService
-        {
-        }
-
-        public class WinSCP : AuthenticatedService
-        {
-        }
-
-        public class Services
-        {
-            public VNC VNC;
-            public RDP RDP;
-            public SSH SSH;
-            public WinSCP WinSCP;
-
-            //List<Service> 
-
-            public Service ByName(string name)
-            {
-                if( name=="VNC" ) return VNC;
-                if( name=="RDP" ) return RDP;
-                if( name=="SSH" ) return SSH;
-                if( name=="WinSCP" ) return WinSCP;
-                return null;
-            }
-        }
 
 
 
@@ -71,17 +49,23 @@ namespace Remoter
             public string Label;
             public string IP;
             public List<Service> Services = new List<Service>(); // just those configured in the config
+            public List<ConsumerApp> Apps = new List<ConsumerApp>(); // just those configured in the config
         }
 
-        public class Applications
+        /// <summary>
+        /// Application config (same for all sessions)
+        /// </summary>
+        public class Application
         {
             public List<App> Apps;
-            public List<string> Services;
+            //public List<string> Services;
         }
 
         public class App
         {
             public string Name;
+            public string Service; // service we are using
+            public string IconFile;
             public string ExeFullPath;
             public string CmdLineArgs;
             public string StartupDir;

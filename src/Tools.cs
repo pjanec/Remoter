@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using System.Drawing;
 
 namespace Remoter
 {
@@ -211,6 +212,23 @@ namespace Remoter
         {
 			return System.IO.Path.GetDirectoryName( GetExePath() );
 		}
+
+		public static Bitmap ResizeImage( Bitmap imgToResize, Size size )
+		{
+			try
+			{
+				Bitmap b = new Bitmap( size.Width, size.Height );
+				using( Graphics g = Graphics.FromImage( b ) )
+				{
+					g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+					g.DrawImage( imgToResize, 0, 0, size.Width, size.Height );
+				}
+				return b;
+			}
+			catch { }
+			return null;
+		}
+
 }
 
 }
