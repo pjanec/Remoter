@@ -3,6 +3,8 @@
 	public class Service
     {
         public Config.Service Conf;
+
+        public string Name => Conf.Name;
         
         /// <summary>
         /// IP address to be ised used to connect to the service;
@@ -17,6 +19,10 @@
         /// otherwise the usual port for that service what port number we will use when connecting via 
         /// </summary>
         public int Port;
+
+        public string UserName;
+
+        public string Password;
         
     }
 }

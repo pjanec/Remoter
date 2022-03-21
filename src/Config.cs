@@ -28,7 +28,7 @@ namespace Remoter
             public string Password;
         }
 
-        public class ConsumerApp
+        public class AppLink
         {
             /// <summary>
             /// Type name of the app, used to reference this app in the session config
@@ -36,7 +36,7 @@ namespace Remoter
             public string Name;
             
             /// <summary>
-            /// What service is this app using
+            /// What service is this app using. If empty, the default from the app def will be used.
             /// </summary>
             public string Service;
         }
@@ -48,6 +48,8 @@ namespace Remoter
         {
             public string Label;
             public string IP;
+            public string UserName;
+            public string Password;
             
             /// <summary>
             /// Is the IP not accessible directly but just via the gateway
@@ -64,7 +66,7 @@ namespace Remoter
             /// The apps can be associated with a service running on this computer;
             /// in such a case they can use the service IP and port (forwarded one of the computer is behind a gateway)
             /// </summary>
-            public List<ConsumerApp> Apps = new List<ConsumerApp>(); // just those configured in the config
+            public List<AppLink> Apps = new List<AppLink>(); // just those configured in the config
         }
 
         /// <summary>
@@ -92,6 +94,7 @@ namespace Remoter
             //public string EnvVarPathToAppend;
             //public string PriorityClass; // idle, belownormal, normal, abovenormal, high, realtime; empty = normal
             //public bool KillTree;
+            public bool UseShellExecute;
         }
 
     }

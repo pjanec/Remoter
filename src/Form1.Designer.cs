@@ -29,10 +29,12 @@ namespace Remoter
         /// </summary>
         private void InitializeComponent()
         {
+			this.components = new System.ComponentModel.Container();
 			this.btnLoad = new System.Windows.Forms.Button();
 			this.grdComputers = new System.Windows.Forms.DataGridView();
 			this.CompName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.btnStart = new System.Windows.Forms.Button();
+			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.grdComputers)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -85,6 +87,12 @@ namespace Remoter
 			this.btnStart.UseVisualStyleBackColor = true;
 			this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
 			// 
+			// timer1
+			// 
+			this.timer1.Enabled = true;
+			this.timer1.Interval = 500;
+			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -108,6 +116,7 @@ namespace Remoter
         private System.Windows.Forms.DataGridView grdComputers;
 		private System.Windows.Forms.Button btnStart;
 		private System.Windows.Forms.DataGridViewTextBoxColumn CompName;
+		private System.Windows.Forms.Timer timer1;
 	}
 }
 

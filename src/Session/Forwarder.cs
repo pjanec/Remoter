@@ -19,7 +19,8 @@ namespace Remoter
 			if( app == null ) return;
 			var appDef = (AppDef)app.AppDef.Clone();
 			appDef.CmdLineArgs = BuildPlinkArgs( session );
-			Launcher = new Launcher( appDef, null, new Dictionary<string, string>() );
+			appDef.WindowStyle = EWindowStyle.Minimized;
+			Launcher = new Launcher( appDef, Tools.AssemblyDirectory, new Dictionary<string, string>() );
 		}
 
 		public void Dispose()
@@ -36,7 +37,7 @@ namespace Remoter
 			sb.Append( $"{session.Conf.Gateway} -l {session.Conf.UserName} -pw {session.Conf.Password} -P 22 -no-antispoof ");
 			foreach( var comp in _session.Computers )
 			{
-				if( comp.Conf.BehindGateway )
+				if( comp.BehindGateway )
 				{
 					foreach( var svc in comp.Services )
 					{

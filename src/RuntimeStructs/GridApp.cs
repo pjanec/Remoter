@@ -8,7 +8,7 @@
 	public class GridApp
     {
         public string Name => App.Name;
-        public Config.Service ServiceConf; // what service are we associated with (null = none)
+        public Service Service;
 
         // app to be started when we click the icon in the grid
         public App App;

@@ -25,6 +25,7 @@ namespace Remoter
         public string EnvVarPathToAppend;
         public string PriorityClass; // idle, belownormal, normal, abovenormal, high, realtime; empty = normal
         public bool KillTree;
+        public bool UseShellExecute;
 
         public object Clone()
         {

@@ -247,7 +247,7 @@ namespace Remoter
 
             // start the process
             var psi = new ProcessStartInfo();
-			psi.FileName = BuildAbsolutePath( pe.Path );
+			psi.FileName = appDef.UseShellExecute ? pe.Path : BuildAbsolutePath( pe.Path );
 			if( !String.IsNullOrEmpty( pe.CmdLine ) )
 			{
 				psi.Arguments = pe.CmdLine;
@@ -267,7 +267,7 @@ namespace Remoter
 				default: psi.WindowStyle = ProcessWindowStyle.Normal; break;
 			}
 			
-			psi.UseShellExecute = false; // allows us using environment variables
+			psi.UseShellExecute = appDef.UseShellExecute;
 
 			//
 			// modify the environment

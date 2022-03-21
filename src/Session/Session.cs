@@ -39,11 +39,11 @@ namespace Remoter
             {
                 foreach( var svcConf in comp.Conf.Services )
                 {
-                    var port = comp.Conf.BehindGateway
+                    var port = comp.BehindGateway
                                 ? ++GlobalContext.Instance.LocalPortBase
                                 : svcConf.Port;
 
-                    var ip = comp.Conf.BehindGateway
+                    var ip = comp.BehindGateway
                                 ? "127.0.0.1"
                                 : comp.Conf.IP;
 
@@ -52,21 +52,29 @@ namespace Remoter
                         {
                             Conf = svcConf,
                             IP = ip,
-                            Port = port 
+                            Port = port,
+                            UserName = svcConf.UserName ?? comp.UserName,
+                            Password = svcConf.Password ?? comp.Password,
                         }
                     );
                 }
 
-                foreach( var appConf in comp.Conf.Apps )
+                foreach( var appLink in comp.Conf.Apps )
                 {
                     // find service conf
-                    var serviceConf = comp.Conf.Services.Find( (x) => x.Name == appConf.Service );
-                    var app = Applications.ByName( appConf.Name );
+                    var app = Applications.ByName( appLink.Name );
+                    if( app == null ) continue;
+
+                    var svcName = appLink.Service ?? string.Empty;
+                    if( string.IsNullOrEmpty( svcName ) )
+                    {
+                        svcName = app.Service ?? string.Empty;
+                    }
 
                     comp.Apps.Add(
                         new GridApp()
                         {
-                            ServiceConf = serviceConf,
+                            Service = comp.Services.Find( (x) => x.Name == svcName ),
                             App = app,
                         }
                     );
@@ -98,6 +106,10 @@ namespace Remoter
             Forwarder.Start();
         }
 
+        public void Stop()
+        {
+            Forwarder.Stop();
+        }
     }
 
 

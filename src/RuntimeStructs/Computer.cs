@@ -7,6 +7,9 @@ namespace Remoter
         public Config.Computer Conf;
         
         public string IP => Conf.IP;
+        public bool BehindGateway => Conf.BehindGateway;
+        public string UserName => Conf.UserName;
+        public string Password => Conf.Password;
         
         /// <summary>
         /// Services running on a computer

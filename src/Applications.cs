@@ -34,15 +34,16 @@ namespace Remoter
         static Launcher DefaultLauncherBuilder( Computer comp, App app )
         {
             var vars = new Dictionary<string,string>();
-            var svc = comp.Conf.Services.Find( (x) => x.Name == app.Service );
+            var svc = comp.Services.Find( (x) => x.Name == app.Service );
             if( svc != null )
             {
+                vars["SVC_IP"] = svc.IP;
                 vars["SVC_PORT"] = svc.Port.ToString();
                 vars["SVC_USERNAME"] = svc.UserName;
                 vars["SVC_PASSWORD"] = svc.Password;
             }
             vars["APP_NEW_GUID"] = Guid.NewGuid().ToString();
-            return new Launcher( app.AppDef, null, vars );
+            return new Launcher( app.AppDef, Tools.AssemblyDirectory, vars );
         }
 
         static Config.Application _cfg;
@@ -72,6 +73,7 @@ namespace Remoter
                     ExeFullPath = def.ExeFullPath,
                     CmdLineArgs = def.CmdLineArgs,
                     StartupDir = def.StartupDir,
+                    UseShellExecute = def.UseShellExecute,
                 };
                 
                 try   { a.Image = new Bitmap( def.IconFile ); }

@@ -4,8 +4,8 @@
       "Name": "TightVNC Viewer",
       "IconFile": "Icons\\VNC.png",
       "Service": "VNC",
-      "ExeFullPath": "C:\\tvnviewer.exe",
-      "CmdLineArgs": "127.0.0.1:%SVC_PORT%",
+      "ExeFullPath": "C:\\Program Files\\TightVNC\\tvnviewer_mouse_pan_zoom.exe",
+      "CmdLineArgs": "%SVC_IP%:%SVC_PORT%",
       "StartupDir": ""
     },
     {
@@ -13,15 +13,15 @@
       "Service": "RDP",
       "IconFile": "Icons\\RDP.png",
       "ExeFullPath": "%windir%\\system32\\mstsc.exe",
-      "CmdLineArgs": "127.0.0.1:%SVC_PORT%",
+      "CmdLineArgs": "/v:%SVC_IP%:%SVC_PORT%",
       "StartupDir": ""
     },
     {
       "Name": "SSH Client",
       "IconFile": "Icons\\SSH.png",
       "Service": "SSH",
-      "ExeFullPath": "ssh.exe",
-      "CmdLineArgs": "127.0.0.1 -P %SVC_PORT% -l %SVC_USERNAME% -pw %SVC_PASSWORD% -no-antispoof",
+      "ExeFullPath": "%windir%\\System32\\OpenSSH\\ssh.exe",
+      "CmdLineArgs": "%SVC_USERNAME%@%SVC_IP%:%SVC_PORT%",
       "StartupDir": ""
     },
     {
@@ -36,17 +36,35 @@
       "Name": "Dirigent Client",
       "IconFile": "Icons\\Dirigent.png",
       "Service": "DIRIGENT",
-      "ExeFullPath": "Dirigent.Agent.exe",
-      "CmdLineArgs": "--masterIp 127.0.0.1 --masterPort %SVC_PORT% --isMaster 0 --mode trayGui --machineId %COMPUTERNAME%_%NEW_GUID% ",
+      "ExeFullPath": "D:\\Work\\BIG\\Dist\\BIG_DistRepo\\Tools\\Dirigent\\Dirigent.Agent.exe",
+      "CmdLineArgs": "--masterIp %SVC_IP% --masterPort %SVC_PORT% --isMaster 0 --mode trayGui --machineId %COMPUTERNAME%_%NEW_GUID%",
       "StartupDir": ""
     },
     {
       "Name": "plink",
       "Service": "SSH",
-      "ExeFullPath": "plink.exe",
-      "CmdLineArgs": "127.0.0.1:%SVC_PORT%",
-      "StartupDir": ""
+      "ExeFullPath": "C:\\Program Files\\PuTTY\\plink.exe",
+      "CmdLineArgs": "",
+      "StartupDir": "",
+      "UseShellExecute": false
+    },
+    {
+      "Name": "Web Browser HTTP",
+      "Service": "HTTP",
+      "ExeFullPath": "http://%SVC_IP%:%SVC_PORT%",
+      "CmdLineArgs": "",
+      "StartupDir": "",
+      "UseShellExecute": true
+    },
+    {
+      "Name": "Web Browser HTTPS",
+      "Service": "HTTPS",
+      "ExeFullPath": "https://%SVC_IP%:%SVC_PORT%",
+      "CmdLineArgs": "",
+      "StartupDir": "",
+      "UseShellExecute": true
     }
+
   ]
 
 }

@@ -1,5 +1,5 @@
 {
-	"Gateway": "10.0.105.3",
+	"Gateway": "10.0.102.5",
 	"UserName": "student",
 	"Password": "Zaq1Xsw2",
 
@@ -7,22 +7,30 @@
 		{
 			"Label": "100 - SimHost",
 			"IP": "192.168.0.100",
-			"BehindGateway":  true,	// true = do port forwarding
+			"BehindGateway": true, // true = do port forwarding
+			"UserName": "student",
+			"Password": "Zaq1XSw2",
 
 			"Services": [
 				{
 					"Name": "VNC",
 					"Port": 5900,
-					"UserName": "student",
-					"Password": "Zaq1XSw2"
 				},
 				{
 					"Name": "RDP",
-					"Port": 3618
+					"Port": 3618,
 				},
 				{
 					"Name": "SSH",
-					"Port": 22
+					"Port": 22,
+				},
+				{
+					"Name": "HTTP",
+					"Port": 80
+				},
+				{
+					"Name": "HTTPS",
+					"Port": 473
 				}
 			],
 
@@ -35,6 +43,12 @@
 				},
 				{
 					"Name": "WinSCP"
+				},
+				{
+					"Name": "Web Browser HTTPS"
+				},
+				{
+					"Name": "SSH Client"
 				}
 			]
 
@@ -42,7 +56,9 @@
 		{
 			"Label": "101 - SIMSERVER",
 			"IP": "192.168.0.101",
-			"BehindGateway": false,	// false = no port forwarding
+			"BehindGateway": true, // false = no port forwarding
+			"UserName": "administrator",
+			"Password": "Zaq1XSw2",
 
 			"Services": [
 				{

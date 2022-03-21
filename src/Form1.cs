@@ -14,7 +14,7 @@ namespace Remoter
 {
 	public partial class frmMain : Form
     {
-		const int gridColName = 0;
+		const int gridColCompName = 0;
 
 
         GlobalContext Context = new GlobalContext();
@@ -39,9 +39,9 @@ namespace Remoter
             for( int i=0; i < maxCols; i++ )
             {
                 var col = new System.Windows.Forms.DataGridViewImageColumn();
-			    col.FillWeight = 15F;
+			    col.FillWeight = 10F;
 			    col.MinimumWidth = 9;
-			    col.Name = $"Col{i}";
+			    col.Name = $"Col{i+1}";
 			    col.HeaderText = "";
                 grdComputers.Columns.Add( col );
             }
@@ -51,9 +51,9 @@ namespace Remoter
             {
                 var items = new object[grdComputers.Columns.Count];
                 
-                items[gridColName] = $"{comp.Conf.Label}";
+                items[gridColCompName] = $"{comp.Conf.Label}";
 
-                int gridCol = gridColName+1;
+                int gridCol = gridColCompName+1;
                 for( int i=0; i < maxCols; i++ )
                 {
                     GridApp app = i < comp.Apps.Count ? comp.Apps[i] : null;
@@ -123,7 +123,7 @@ namespace Remoter
 
         void OnStartServiceClicked( Computer comp, GridApp svc )
         {
-            MessageBox.Show($"Clicked {comp.IP} {svc.Name}");
+            //MessageBox.Show($"Clicked {comp.IP} {svc.Name}");
 
             if( svc.Launcher == null || !svc.Launcher.Running )
             {
@@ -171,36 +171,86 @@ namespace Remoter
             Session?.Dispose();
 		}
 
-		private void btnStart_Click( object sender, EventArgs e )
-		{
-            Session?.Start();
-		}
-
 		private void grdComputers_CellFormatting( object sender, DataGridViewCellFormattingEventArgs e )
 		{
-            //if ( (e.ColumnIndex == this.dataGridView1.Columns["Rating"].Index)
-            //        && e.Value != null )
-            //    {
-            //        DataGridViewCell cell = 
-            //            this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
-            //        if (e.Value.Equals("*"))
-            //        {                
-            //            cell.ToolTipText = "very bad";
-            //        }
-            //        else if (e.Value.Equals("**"))
-            //        {
-            //            cell.ToolTipText = "bad";
-            //        }
-            //        else if (e.Value.Equals("***"))
-            //        {
-            //            cell.ToolTipText = "good";
-            //        }
-            //        else if (e.Value.Equals("****"))
-            //        {
-            //            cell.ToolTipText = "very good";
-            //        }
-            //    }
+            var comp = Computers[e.RowIndex];
+
+            DataGridViewCell cell = this.grdComputers.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+            if( e.ColumnIndex == gridColCompName )
+            {
+                if( comp.BehindGateway )
+                {
+                    cell.ToolTipText = $"{comp.IP} (remote)";
+            }
+                else
+                {
+                    cell.ToolTipText = $"{comp.IP} (local)";
+                }
+            }
+            else
+            {
+                int appIndex = e.ColumnIndex-1;
+                var app = appIndex < comp.Apps.Count ? comp.Apps[appIndex] : null;
+                if( app != null )
+                {
+                    var text = app.Name;
+                    var svc = app.Service;
+                    if( svc != null )
+                    {
+                        if( comp.BehindGateway )
+                        {
+                            text += $", {svc.Name} {svc.IP}:{svc.Port} => {comp.IP}:{svc.Conf.Port}";
+                        }
+                        else
+                        {
+                            text += $", {svc.Name} {svc.IP}:{svc.Port}";
+                        }
+                    }
+                    else
+                    {
+                    }
+                    cell.ToolTipText = text;
+
+                }
+			}
 		}
+
+		bool _wasForwarderRunning = false;
+
+        void UpdateForwardingStatus()
+		{
+            if( Session == null ) return;
+            if( !_wasForwarderRunning && Session.Forwarder.IsRunning )
+            {
+                btnStart.Text = "Stop Fwd";
+                _wasForwarderRunning = Session.Forwarder.IsRunning;
+            }
+            else
+            if( _wasForwarderRunning && !Session.Forwarder.IsRunning )
+            {
+                btnStart.Text = "Start Fwd";
+                _wasForwarderRunning = Session.Forwarder.IsRunning;
+            }
+		}
+
+		private void btnStart_Click( object sender, EventArgs e )
+		{
+            if( !Session.Forwarder.IsRunning )
+            {
+                Session?.Start();
+            }
+            else
+            {
+                Session?.Stop();
+            }
+		}
+
+		private void timer1_Tick( object sender, EventArgs e )
+		{
+            UpdateForwardingStatus();
+		}
+
 	}
 
 }
