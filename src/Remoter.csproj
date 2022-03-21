@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RuntimeStructs\App.cs" />
     <Compile Include="Launcher\AppDef.cs" />
     <Compile Include="RuntimeStructs\Computer.cs" />
     <Compile Include="RuntimeStructs\GlobalContext.cs" />

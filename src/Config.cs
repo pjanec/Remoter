@@ -80,7 +80,7 @@ namespace Remoter
             /// The apps can be associated with a service running on this computer;
             /// in such a case they can use the service IP and port (forwarded one of the computer is behind a gateway)
             /// </summary>
-            public List<AppLink> Apps = new List<AppLink>(); // just those configured in the config
+            public List<App> Apps = new List<App>(); // just those configured in the config
         }
 
         /// <summary>
@@ -100,15 +100,15 @@ namespace Remoter
             public string ExeFullPath;
             public string CmdLineArgs;
             public string StartupDir;
-            //public bool AdoptIfAlreadyRunning;
-            //public EWindowStyle WindowStyle = EWindowStyle.NotSet;
+            //public bool? AdoptIfAlreadyRunning;
+            //public EWindowStyle? WindowStyle = EWindowStyle.NotSet;
             //public Dictionary<string, string> EnvVarsToSet = new Dictionary<string, string>();
             //public Dictionary<string, string> LocalVarsToSet = new Dictionary<string, string>();
             //public string EnvVarPathToPrepend;
             //public string EnvVarPathToAppend;
             //public string PriorityClass; // idle, belownormal, normal, abovenormal, high, realtime; empty = normal
-            //public bool KillTree;
-            public bool UseShellExecute;
+            //public bool? KillTree;
+            public bool? UseShellExecute;
         }
 
     }

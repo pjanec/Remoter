@@ -77,9 +77,11 @@ namespace Remoter
 
                 foreach( var appLink in comp.Conf.Apps )
                 {
-                    // find service conf
-                    var app = Applications.ByName( appLink.Name );
-                    if( app == null ) continue;
+                    // load app hierarchically (default first, overwrite with our app settings)
+                    var app = Applications.ByName( appLink.Name ); //load default first
+                    if( app == null ) app = new App(); // if no default, start from scratch
+                    app.LoadFromConfig( appLink ); // overwrite with our settings
+                    if( app.Name == null ) continue; // nothing defined
 
                     var svcName = appLink.Service ?? string.Empty;
                     if( string.IsNullOrEmpty( svcName ) )

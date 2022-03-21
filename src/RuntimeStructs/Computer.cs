@@ -3,11 +3,14 @@ using System.Collections.Generic;
 
 namespace Remoter
 {
-	public class Computer : Credentials
+	public class Computer
     {
         public Config.Computer Conf;
         
         public string IP => Conf.IP;
+        public string UserName;
+        public string Password;
+
         public bool IsRemote => _isRemoteFunc();
 
         Func<bool> _isRemoteFunc;
