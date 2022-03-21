@@ -8,6 +8,8 @@ namespace Remoter
     {
         public Config.Session Conf;
 
+        public Gateway Gateway;
+
         public List<Computer> Computers = new List<Computer>();
         public Forwarder Forwarder;
 
@@ -27,9 +29,25 @@ namespace Remoter
         {
             Conf = JsonConvert.DeserializeObject<Config.Session>( System.IO.File.ReadAllText( fileName ) );
 
-            foreach( var c in Conf.Computers )
+            Gateway = new Gateway()
             {
-                var comp = new Computer() { Conf = c };
+                IP = Conf.Gateway.IP,
+                UserName = Conf.Gateway.UserName ?? Conf.DefaultCredentials.UserName,
+                Password = Conf.Gateway.Password ?? Conf.DefaultCredentials.Password,
+            };
+
+
+            foreach( var compConf in Conf.Computers )
+            {
+                var comp = new Computer(
+                    () => Forwarder.IsRunning ? !compConf.AlwaysLocal : false  // if forwarder not working, consider all computers local
+                )
+                {
+                    Conf = compConf,
+                    UserName = compConf.UserName ?? Conf.DefaultCredentials.UserName,
+                    Password = compConf.Password ?? Conf.DefaultCredentials.Password,
+                };
+
                 Computers.Add( comp );
             }
 
@@ -39,20 +57,18 @@ namespace Remoter
             {
                 foreach( var svcConf in comp.Conf.Services )
                 {
-                    var port = comp.BehindGateway
-                                ? ++GlobalContext.Instance.LocalPortBase
-                                : svcConf.Port;
-
-                    var ip = comp.BehindGateway
-                                ? "127.0.0.1"
-                                : comp.Conf.IP;
-
                     comp.Services.Add(
-                        new Service()
+                        new Service(
+                            comp,
+                            // local
+                            comp.Conf.IP,
+                            svcConf.Port,
+                            // remote
+                            "127.0.0.1",
+                            ++GlobalContext.Instance.LocalPortBase
+                        )
                         {
                             Conf = svcConf,
-                            IP = ip,
-                            Port = port,
                             UserName = svcConf.UserName ?? comp.UserName,
                             Password = svcConf.Password ?? comp.Password,
                         }

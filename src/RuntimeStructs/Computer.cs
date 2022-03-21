@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Remoter
 {
-	public class Computer
+	public class Computer : Credentials
     {
         public Config.Computer Conf;
         
         public string IP => Conf.IP;
-        public bool BehindGateway => Conf.BehindGateway;
-        public string UserName => Conf.UserName;
-        public string Password => Conf.Password;
+        public bool IsRemote => _isRemoteFunc();
+
+        Func<bool> _isRemoteFunc;
         
         /// <summary>
         /// Services running on a computer
@@ -25,5 +26,10 @@ namespace Remoter
         /// What grid row this computer is shown in
         /// </summary>
         public int GridRowIdx;
+
+        public Computer( Func<bool> isRemoteFunc )
+        {
+            _isRemoteFunc = isRemoteFunc;
+        }
     }
 }

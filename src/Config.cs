@@ -8,11 +8,24 @@ namespace Remoter
 {
     namespace Config
     {
-        public class Session
+
+        public class Credentials
         {
-            public string Gateway;
             public string UserName;
             public string Password;
+        }
+
+        public class Gateway
+        {
+            public string IP;
+            public string UserName;
+            public string Password;
+        }
+
+        public class Session
+        {
+            public Credentials DefaultCredentials;
+            public Gateway Gateway;
             public List<Computer> Computers;
         }
 
@@ -50,11 +63,12 @@ namespace Remoter
             public string IP;
             public string UserName;
             public string Password;
+
             
             /// <summary>
             /// Is the IP not accessible directly but just via the gateway
             /// </summary>
-            public bool BehindGateway;
+            public bool AlwaysLocal;
 
             /// <summary>
             /// What network services are running on the computer

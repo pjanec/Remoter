@@ -179,7 +179,7 @@ namespace Remoter
 
             if( e.ColumnIndex == gridColCompName )
             {
-                if( comp.BehindGateway )
+                if( comp.IsRemote )
                 {
                     cell.ToolTipText = $"{comp.IP} (remote)";
             }
@@ -198,13 +198,13 @@ namespace Remoter
                     var svc = app.Service;
                     if( svc != null )
                     {
-                        if( comp.BehindGateway )
+                        if( comp.IsRemote )
                         {
-                            text += $", {svc.Name} {svc.IP}:{svc.Port} => {comp.IP}:{svc.Conf.Port}";
+                            text += $", {svc.Name} {svc.FwdIP}:{svc.FwdPort} => {svc.NativeIP}:{svc.NativePort}";
                         }
                         else
                         {
-                            text += $", {svc.Name} {svc.IP}:{svc.Port}";
+                            text += $", {svc.Name} {svc.NativeIP}:{svc.NativePort}";
                         }
                     }
                     else
@@ -218,6 +218,20 @@ namespace Remoter
 
 		bool _wasForwarderRunning = false;
 
+
+        void ReevaluateToolTips()
+        {
+            foreach( DataGridViewRow row in this.grdComputers.Rows )
+            {
+                foreach( DataGridViewCell cell in row.Cells )
+                {
+                    // force the tooltips to be recalculated
+                    // https://stackoverflow.com/questions/10651702/is-there-a-way-to-force-a-datagridview-to-fire-its-cellformatting-event-for-all
+                    var o = cell.FormattedValue;
+                }
+            }
+        }
+
         void UpdateForwardingStatus()
 		{
             if( Session == null ) return;
@@ -225,12 +239,14 @@ namespace Remoter
             {
                 btnStart.Text = "Stop Fwd";
                 _wasForwarderRunning = Session.Forwarder.IsRunning;
+                ReevaluateToolTips();
             }
             else
             if( _wasForwarderRunning && !Session.Forwarder.IsRunning )
             {
                 btnStart.Text = "Start Fwd";
                 _wasForwarderRunning = Session.Forwarder.IsRunning;
+                ReevaluateToolTips();
             }
 		}
 

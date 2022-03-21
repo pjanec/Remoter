@@ -1,78 +1,72 @@
 {
-	"Gateway": "10.0.102.5",
-	"UserName": "student",
-	"Password": "Zaq1Xsw2",
+    "DefaultCredentials": {
+		"UserName": "student",
+		"Password": "Zaq1Xsw2"
+    },
+
+	"Gateway": 	{
+		"IP": "10.0.102.5",
+		//"UserName": "student",
+		//"Password": "Zaq1XSw2",
+	},
 
 	"Computers": [
 		{
-			"Label": "100 - SimHost",
+			"Label": "100 - MainIOS - SimHost",
 			"IP": "192.168.0.100",
-			"BehindGateway": true, // true = do port forwarding
-			"UserName": "student",
-			"Password": "Zaq1XSw2",
 
 			"Services": [
-				{
-					"Name": "VNC",
-					"Port": 5900,
-				},
-				{
-					"Name": "RDP",
-					"Port": 3618,
-				},
-				{
-					"Name": "SSH",
-					"Port": 22,
-				},
-				{
-					"Name": "HTTP",
-					"Port": 80
-				},
-				{
-					"Name": "HTTPS",
-					"Port": 473
-				}
+				{ "Name": "VNC", "Port": 5900 },
+				{ "Name": "SSH", "Port": 22 },
 			],
 
 			"Apps": [
-				{
-					"Name": "TightVNC Viewer"
-				},
-				{
-					"Name": "Remote Desktop Client"
-				},
-				{
-					"Name": "WinSCP"
-				},
-				{
-					"Name": "Web Browser HTTPS"
-				},
-				{
-					"Name": "SSH Client"
-				}
+				{ "Name": "TightVNC Viewer"	},
+				{ "Name": "WinSCP" },
+			]
+
+		},
+
+		{
+			"Label": "101 - SinIG_1 - 2502",
+			"IP": "192.168.0.100",
+
+			"Services": [
+				{ "Name": "VNC", "Port": 5900 },
+			],
+
+			"Apps": [
+				{ "Name": "TightVNC Viewer"	},
+				{ "Name": "WinSCP" },
+			]
+
+		},
+
+		{
+			"Label": "150 - MainIOS - SimHost - 2501",
+			"IP": "192.168.0.150",
+
+			"Services": [
+				{ "Name": "VNC", "Port": 5900 },
+				{ "Name": "SSH", "Port": 22 },
+			],
+
+			"Apps": [
+				{ "Name": "TightVNC Viewer"	},
+				{ "Name": "WinSCP" },
 			]
 
 		},
 		{
-			"Label": "101 - SIMSERVER",
+			"Label": "110 - SIMSERVER - 2500",
 			"IP": "192.168.0.101",
-			"BehindGateway": true, // false = no port forwarding
 			"UserName": "administrator",
 			"Password": "Zaq1XSw2",
 
 			"Services": [
-				{
-					"Name": "VNC",
-					"Port": 5900
-				},
-				{
-					"Name": "RDBG",
-					"Port": 4024
-				},
-				{
-					"Name": "DIRIGENT",
-					"Port": 5045
-				}
+				{ "Name": "VNC", "Port": 5900 },
+				{ "Name": "RDBG", "Port": 4024 },
+				{ "Name": "DIRIGENT", "Port": 5045 }
 			],
 
 			"Apps": [

@@ -34,15 +34,15 @@ namespace Remoter
 			var sb = new StringBuilder();
 			// 
 			//&plink.exe 10.0.103.7 -l student -pw Zaq1Xsw2 -P 22 -no-antispoof `
-			sb.Append( $"{session.Conf.Gateway} -l {session.Conf.UserName} -pw {session.Conf.Password} -P 22 -no-antispoof ");
+			sb.Append( $"{session.Gateway.IP} -l {session.Gateway.UserName} -pw {session.Gateway.Password} -P 22 -no-antispoof ");
 			foreach( var comp in _session.Computers )
 			{
-				if( comp.BehindGateway )
+				if( comp.Conf.AlwaysLocal )
 				{
 					foreach( var svc in comp.Services )
 					{
 						// -L 7101:192.168.0.101:5900 
-						var fwdArg = $"-L {svc.Port}:{comp.IP}:{svc.Conf.Port} ";
+						var fwdArg = $"-L {svc.FwdPort}:{svc.NativeIP}:{svc.NativePort} ";
 						sb.Append( fwdArg );
 					}
 				}

@@ -61,6 +61,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="RuntimeStructs\Gateway.cs" />
     <Compile Include="RuntimeStructs\Service.cs" />
     <Compile Include="Session\Forwarder.cs" />
     <Compile Include="ILog.cs" />
