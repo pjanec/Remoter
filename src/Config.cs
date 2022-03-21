@@ -48,7 +48,22 @@ namespace Remoter
         {
             public string Label;
             public string IP;
+            
+            /// <summary>
+            /// Is the IP not accessible directly but just via the gateway
+            /// </summary>
+            public bool BehindGateway;
+
+            /// <summary>
+            /// What network services are running on the computer
+            /// </summary>
             public List<Service> Services = new List<Service>(); // just those configured in the config
+            
+            /// <summary>
+            /// What apps will be shown in our toolbar for this computer.
+            /// The apps can be associated with a service running on this computer;
+            /// in such a case they can use the service IP and port (forwarded one of the computer is behind a gateway)
+            /// </summary>
             public List<ConsumerApp> Apps = new List<ConsumerApp>(); // just those configured in the config
         }
 

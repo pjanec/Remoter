@@ -17,7 +17,9 @@ namespace Remoter
 			_session = session;
 			var app = Applications.ByName("plink");
 			if( app == null ) return;
-			Launcher = new Launcher( app.AppDef, null, new Dictionary<string, string>() );
+			var appDef = (AppDef)app.AppDef.Clone();
+			appDef.CmdLineArgs = BuildPlinkArgs( session );
+			Launcher = new Launcher( appDef, null, new Dictionary<string, string>() );
 		}
 
 		public void Dispose()
@@ -26,26 +28,30 @@ namespace Remoter
 			Launcher?.Dispose();
 		}
 
-		string BuildPlinkArgs()
+		string BuildPlinkArgs( Session session )
 		{
 			var sb = new StringBuilder();
 			// 
 			//&plink.exe 10.0.103.7 -l student -pw Zaq1Xsw2 -P 22 -no-antispoof `
-			sb.Append( $"{_session.Conf.Gateway} -l {_session.Conf.UserName} -pw {_session.Conf.Password} -P 22 -no-antispoof ");
+			sb.Append( $"{session.Conf.Gateway} -l {session.Conf.UserName} -pw {session.Conf.Password} -P 22 -no-antispoof ");
 			foreach( var comp in _session.Computers )
 			{
-				foreach( var svc in comp.Services )
+				if( comp.Conf.BehindGateway )
 				{
-					// -L 7101:192.168.0.101:5900 
-					var fwdArg = $"-L {svc.LocalPort}:{comp.IP}:{svc.Conf.Port} ";
-					sb.Append( fwdArg );
-
+					foreach( var svc in comp.Services )
+					{
+						// -L 7101:192.168.0.101:5900 
+						var fwdArg = $"-L {svc.Port}:{comp.IP}:{svc.Conf.Port} ";
+						sb.Append( fwdArg );
+					}
 				}
 			}
 
 			return sb.ToString();
 		}
 
+		
+		public bool IsRunning => Launcher != null && Launcher.Running;
 		
 		public void Start()
 		{

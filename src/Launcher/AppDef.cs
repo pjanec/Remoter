@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Remoter
 {
@@ -11,7 +12,7 @@ namespace Remoter
         Hidden
     }
 
-	public class AppDef
+	public class AppDef : ICloneable
     {
         public string ExeFullPath;
         public string CmdLineArgs;
@@ -24,6 +25,14 @@ namespace Remoter
         public string EnvVarPathToAppend;
         public string PriorityClass; // idle, belownormal, normal, abovenormal, high, realtime; empty = normal
         public bool KillTree;
+
+        public object Clone()
+        {
+            var appDef = (AppDef)MemberwiseClone();
+            appDef.EnvVarsToSet = new Dictionary<string, string>( EnvVarsToSet );
+            appDef.LocalVarsToSet = new Dictionary<string, string>( LocalVarsToSet );
+            return appDef;
+        }
     }
 
 }

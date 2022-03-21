@@ -33,19 +33,26 @@ namespace Remoter
                 Computers.Add( comp );
             }
 
-            Forwarder = new Forwarder( this );
-
 
             // fill columns for each computer in the session
             foreach( var comp in Computers )
             {
                 foreach( var svcConf in comp.Conf.Services )
                 {
+                    var port = comp.Conf.BehindGateway
+                                ? ++GlobalContext.Instance.LocalPortBase
+                                : svcConf.Port;
+
+                    var ip = comp.Conf.BehindGateway
+                                ? "127.0.0.1"
+                                : comp.Conf.IP;
+
                     comp.Services.Add(
                         new Service()
                         {
                             Conf = svcConf,
-                            LocalPort = ++GlobalContext.Instance.LocalPortBase,
+                            IP = ip,
+                            Port = port 
                         }
                     );
                 }
@@ -57,7 +64,7 @@ namespace Remoter
                     var app = Applications.ByName( appConf.Name );
 
                     comp.Apps.Add(
-                        new ConsumerApp()
+                        new GridApp()
                         {
                             ServiceConf = serviceConf,
                             App = app,
@@ -65,6 +72,9 @@ namespace Remoter
                     );
                 }
             }
+
+
+            Forwarder = new Forwarder( this );
         }
 
         void KillApps()

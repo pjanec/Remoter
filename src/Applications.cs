@@ -11,7 +11,7 @@ namespace Remoter
     /// <summary>
     /// Application that can be started by clicking in the grid
     /// </summary>
-    public class GridApp
+    public class App
     {
         public string Name; 
         public string Service; // service id
@@ -22,7 +22,7 @@ namespace Remoter
 
     public static class Applications
 	{
-        static public List<GridApp> Apps = new List<GridApp>();
+        static public List<App> Apps = new List<App>();
 
         /// <summary>
         /// Union of all services
@@ -31,7 +31,7 @@ namespace Remoter
 
         //static public List<GridApp> GridApps => (from x in ServiceNames let app = ByName(x) where app != null select app).ToList();
 
-        static Launcher DefaultLauncherBuilder( Computer comp, GridApp app )
+        static Launcher DefaultLauncherBuilder( Computer comp, App app )
         {
             var vars = new Dictionary<string,string>();
             var svc = comp.Conf.Services.Find( (x) => x.Name == app.Service );
@@ -64,7 +64,7 @@ namespace Remoter
 
             foreach( var def in _cfg.Apps )
             {
-                var a = new GridApp();
+                var a = new App();
                 a.Name = def.Name;
                 a.Service = def.Service;
                 a.AppDef = new AppDef()
@@ -75,7 +75,7 @@ namespace Remoter
                 };
                 
                 try   { a.Image = new Bitmap( def.IconFile ); }
-                catch { a.Image = Resource1.Empty; }
+                catch { a.Image = Resource1.Unknown; }
 
                 a.LauncherBuilder = (Computer comp) => { return DefaultLauncherBuilder( comp, a ); };
 
@@ -84,7 +84,7 @@ namespace Remoter
 
         }
 
-        static void Register( GridApp app )
+        static void Register( App app )
         {
             Apps.Add( app );
 
@@ -95,7 +95,7 @@ namespace Remoter
             LoadConfig("apps.json");
         }
 
-		public static GridApp ByName( string name )
+		public static App ByName( string name )
 		{
             return  Apps.Find( (x) => x.Name == name );
 		}

@@ -7,6 +7,7 @@
 		{
 			"Label": "100 - SimHost",
 			"IP": "192.168.0.100",
+			"BehindGateway":  true,	// true = do port forwarding
 
 			"Services": [
 				{
@@ -41,6 +42,7 @@
 		{
 			"Label": "101 - SIMSERVER",
 			"IP": "192.168.0.101",
+			"BehindGateway": false,	// false = no port forwarding
 
 			"Services": [
 				{
@@ -62,7 +64,7 @@
 					"Name": "TightVNC Viewer"
 				},
 				{
-					"Name": "Dirigent Client",
+					"Name": "Dirigent Client"
 				}
 			]
 		}

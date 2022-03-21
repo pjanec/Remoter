@@ -16,7 +16,7 @@ namespace Remoter
         /// <summary>
         /// Apps to be started when clicked on the icon in the grid
         /// </summary>
-        public List<ConsumerApp> Apps = new List<ConsumerApp>();
+        public List<GridApp> Apps = new List<GridApp>();
         
         /// <summary>
         /// What grid row this computer is shown in

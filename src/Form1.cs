@@ -27,14 +27,22 @@ namespace Remoter
         {
             Session = new Session( fileName );
 
+            // find the number of comulns needed - the highest amount of apps per computer
+            int maxCols = 0;
+            foreach( var comp in Computers )
+            {
+                if( comp.Apps.Count > maxCols )
+                    maxCols = comp.Apps.Count;
+            }
+
             // define columns
-            foreach( var app in Applications.Apps )
+            for( int i=0; i < maxCols; i++ )
             {
                 var col = new System.Windows.Forms.DataGridViewImageColumn();
 			    col.FillWeight = 15F;
 			    col.MinimumWidth = 9;
-			    col.Name = app.Name;
-			    col.HeaderText = app.Name;
+			    col.Name = $"Col{i}";
+			    col.HeaderText = "";
                 grdComputers.Columns.Add( col );
             }
 
@@ -46,13 +54,14 @@ namespace Remoter
                 items[gridColName] = $"{comp.Conf.Label}";
 
                 int gridCol = gridColName+1;
-                foreach( var app in Applications.Apps )
+                for( int i=0; i < maxCols; i++ )
                 {
-                    var consumer = comp.Apps.Find( (x) => app.Name == x.Name );    
-                    if( consumer != null ) // is app configured for this computer?
+                    GridApp app = i < comp.Apps.Count ? comp.Apps[i] : null;
+
+                    if( app != null ) // is app configured for this computer?
                     {
-                        items[gridCol] = Tools.ResizeImage( new Bitmap( app.Image ), new Size( 20, 20 ) );
-                        consumer.GridColIndex = gridCol;
+                        items[gridCol] = Tools.ResizeImage( new Bitmap(app.App.Image), new Size( 20, 20 ) );
+                        app.GridColIndex = gridCol;
                     }
                     else
                     {
@@ -112,7 +121,7 @@ namespace Remoter
 
         }
 
-        void OnStartServiceClicked( Computer comp, ConsumerApp svc )
+        void OnStartServiceClicked( Computer comp, GridApp svc )
         {
             MessageBox.Show($"Clicked {comp.IP} {svc.Name}");
 
@@ -165,6 +174,32 @@ namespace Remoter
 		private void btnStart_Click( object sender, EventArgs e )
 		{
             Session?.Start();
+		}
+
+		private void grdComputers_CellFormatting( object sender, DataGridViewCellFormattingEventArgs e )
+		{
+            //if ( (e.ColumnIndex == this.dataGridView1.Columns["Rating"].Index)
+            //        && e.Value != null )
+            //    {
+            //        DataGridViewCell cell = 
+            //            this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            //        if (e.Value.Equals("*"))
+            //        {                
+            //            cell.ToolTipText = "very bad";
+            //        }
+            //        else if (e.Value.Equals("**"))
+            //        {
+            //            cell.ToolTipText = "bad";
+            //        }
+            //        else if (e.Value.Equals("***"))
+            //        {
+            //            cell.ToolTipText = "good";
+            //        }
+            //        else if (e.Value.Equals("****"))
+            //        {
+            //            cell.ToolTipText = "very good";
+            //        }
+            //    }
 		}
 	}
 

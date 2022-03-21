@@ -63,6 +63,7 @@ namespace Remoter
 			this.grdComputers.Size = new System.Drawing.Size(524, 240);
 			this.grdComputers.TabIndex = 9;
 			this.grdComputers.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdComputers_CellEnter);
+			this.grdComputers.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.grdComputers_CellFormatting);
 			this.grdComputers.CurrentCellDirtyStateChanged += new System.EventHandler(this.grdComputers_CurrentCellDirtyStateChanged);
 			this.grdComputers.MouseClick += new System.Windows.Forms.MouseEventHandler(this.grdComputers_MouseClick);
 			// 
