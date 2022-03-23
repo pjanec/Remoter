@@ -26,6 +26,21 @@ namespace Remoter
         public void InitSession( string fileName )
         {
             Session = new Session( fileName );
+            ReloadFromSession();
+        }
+
+        public void ReloadFromSession()
+        {
+            // computer name column
+            grdComputers.Columns.Clear();
+            {
+                var col = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			    col.FillWeight = 50F;
+			    col.MinimumWidth = 100;
+			    col.Name = $"ComputerName";
+			    col.HeaderText = "Computer";
+                grdComputers.Columns.Add( col );
+            }
 
             // find the number of comulns needed - the highest amount of apps per computer
             int maxCols = 0;
@@ -35,7 +50,6 @@ namespace Remoter
                     maxCols = comp.Apps.Count;
             }
 
-            // define columns
             for( int i=0; i < maxCols; i++ )
             {
                 var col = new System.Windows.Forms.DataGridViewImageColumn();
@@ -60,12 +74,27 @@ namespace Remoter
 
                     if( app != null ) // is app configured for this computer?
                     {
-                        items[gridCol] = Tools.ResizeImage( new Bitmap(app.App.Image), new Size( 20, 20 ) );
-                        app.GridColIndex = gridCol;
+                        bool activateApp =
+                            (Session.IsPortForwarding && app.ShowInPortFwdMode)
+                              ||
+                            (!Session.IsPortForwarding && app.ShowInLocalMode);
+                    
+
+                        if( activateApp )
+                        {
+                            items[gridCol] = Tools.ResizeImage( new Bitmap(app.App.Image), new Size( 20, 20 ) );
+                            app.GridColIndex = gridCol;
+                        }
+                        else
+                        {
+                            items[gridCol] = Tools.ResizeImage( new Bitmap( Resource1.Empty ), new Size( 20, 20 ) );
+                            app.GridColIndex = -1; // do not respond to clicks
+                        }
                     }
                     else
                     {
                         items[gridCol] = Tools.ResizeImage( new Bitmap( Resource1.Empty ), new Size( 20, 20 ) );
+                        app.GridColIndex = -1; // do not respond to clicks
                     }
 
                     gridCol++;
@@ -127,7 +156,7 @@ namespace Remoter
 
             if( svc.Launcher == null || !svc.Launcher.Running )
             {
-                svc.Launcher = svc.App.LauncherBuilder( comp );
+                svc.Launcher = svc.App.LauncherBuilder( Session, comp );
                 try
                 {
                     svc.Launcher.Launch();
@@ -235,24 +264,31 @@ namespace Remoter
         void UpdateForwardingStatus()
 		{
             if( Session == null ) return;
-            if( !_wasForwarderRunning && Session.Forwarder.IsRunning )
+            if( !_wasForwarderRunning && Session.IsPortForwarding )
             {
                 btnStart.Text = "Stop Fwd";
-                _wasForwarderRunning = Session.Forwarder.IsRunning;
-                ReevaluateToolTips();
+                _wasForwarderRunning = Session.IsPortForwarding;
+                ForwardingStatusChanged();
             }
             else
-            if( _wasForwarderRunning && !Session.Forwarder.IsRunning )
+            if( _wasForwarderRunning && !Session.IsPortForwarding )
             {
                 btnStart.Text = "Start Fwd";
-                _wasForwarderRunning = Session.Forwarder.IsRunning;
-                ReevaluateToolTips();
+                _wasForwarderRunning = Session.IsPortForwarding;
+                ForwardingStatusChanged();
             }
 		}
 
+        void ForwardingStatusChanged()
+        {
+            ReevaluateToolTips();
+            ReloadFromSession();
+        }
+
+
 		private void btnStart_Click( object sender, EventArgs e )
 		{
-            if( !Session.Forwarder.IsRunning )
+            if( !Session.IsPortForwarding )
             {
                 Session?.Start();
             }

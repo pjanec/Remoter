@@ -28,9 +28,11 @@
       "Name": "WinSCP",
       "IconFile": "Icons\\WinSCP.png",
       "Service": "SSH",
-      "ExeFullPath": "scp.exe",
-      "CmdLineArgs": "127.0.0.1:%SVC_PORT%",
-      "StartupDir": ""
+      "ExeFullPath": "C:\\Program Files (x86)\\WinSCP\\WinSCP.exe",
+      "CmdLineArgs": "sftp://%GW_USERNAME%:%GW_PASSWORD%@%GW_IP%/%REMOTE_PATH%",
+      "StartupDir": "",
+      "ShowInPortFwdMode": true,
+      "ShowInLocalMode": false,
     },
     {
       "Name": "Dirigent Client",

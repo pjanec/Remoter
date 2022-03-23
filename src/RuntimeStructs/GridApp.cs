@@ -9,6 +9,8 @@
     {
         public string Name => App.Name;
         public Service Service;
+        public bool ShowInPortFwdMode => App.ShowInPortFwdMode;
+        public bool ShowInLocalMode => App.ShowInLocalMode;
 
         // app to be started when we click the icon in the grid
         public App App;

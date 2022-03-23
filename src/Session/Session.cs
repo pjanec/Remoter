@@ -13,6 +13,8 @@ namespace Remoter
         public List<Computer> Computers = new List<Computer>();
         public Forwarder Forwarder;
 
+        public bool IsPortForwarding => Forwarder.IsRunning;
+
 
         public Session( string fileName )
         {
@@ -31,7 +33,9 @@ namespace Remoter
 
             Gateway = new Gateway()
             {
-                IP = Conf.Gateway.IP,
+                ExternalIP = Conf.Gateway.ExternalIP,
+                InternalIP = Conf.Gateway.InternalIP,
+                Port = Conf.Gateway.Port ?? 22,
                 UserName = Conf.Gateway.UserName ?? Conf.DefaultCredentials.UserName,
                 Password = Conf.Gateway.Password ?? Conf.DefaultCredentials.Password,
             };
@@ -78,8 +82,8 @@ namespace Remoter
                 foreach( var appLink in comp.Conf.Apps )
                 {
                     // load app hierarchically (default first, overwrite with our app settings)
-                    var app = Applications.ByName( appLink.Name ); //load default first
-                    if( app == null ) app = new App(); // if no default, start from scratch
+                    var appTempl = Applications.ByName( appLink.Name ); //load default first
+                    var app = appTempl == null ? new App() : (App) appTempl.Clone(); // if no default, start from scratch
                     app.LoadFromConfig( appLink ); // overwrite with our settings
                     if( app.Name == null ) continue; // nothing defined
 

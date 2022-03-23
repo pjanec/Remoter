@@ -34,7 +34,7 @@ namespace Remoter
 			var sb = new StringBuilder();
 			// 
 			//&plink.exe 10.0.103.7 -l student -pw Zaq1Xsw2 -P 22 -no-antispoof `
-			sb.Append( $"{session.Gateway.IP} -l {session.Gateway.UserName} -pw {session.Gateway.Password} -P 22 -no-antispoof ");
+			sb.Append( $"{session.Gateway.ExternalIP} -P {session.Gateway.Port} -l {session.Gateway.UserName} -pw {session.Gateway.Password} -P 22 -no-antispoof ");
 			foreach( var comp in _session.Computers )
 			{
 				if( !comp.Conf.AlwaysLocal )

@@ -17,7 +17,9 @@ namespace Remoter
 
         public class Gateway
         {
-            public string IP;
+            public string ExternalIP; // accessible from outside
+            public int? Port;
+            public string InternalIP; // internal IP of the gateway (to be used if not port forwarding)
             public string UserName;
             public string Password;
         }
@@ -41,26 +43,11 @@ namespace Remoter
             public string Password;
         }
 
-        public class AppLink
-        {
-            /// <summary>
-            /// Type name of the app, used to reference this app in the session config
-            /// </summary>
-            public string Name;
-            
-            /// <summary>
-            /// What service is this app using. If empty, the default from the app def will be used.
-            /// </summary>
-            public string Service;
-        }
-
-
-
 
         public class Computer
         {
             public string Label;
-            public string IP;
+            public string IP; // internal ip (accessible from inner network)
             public string UserName;
             public string Password;
 
@@ -96,14 +83,16 @@ namespace Remoter
         {
             public string Name;
             public string Service; // service we are using
+            public bool? ShowInPortFwdMode;
+            public bool? ShowInLocalMode;
             public string IconFile;
             public string ExeFullPath;
             public string CmdLineArgs;
             public string StartupDir;
             //public bool? AdoptIfAlreadyRunning;
             //public EWindowStyle? WindowStyle = EWindowStyle.NotSet;
-            //public Dictionary<string, string> EnvVarsToSet = new Dictionary<string, string>();
-            //public Dictionary<string, string> LocalVarsToSet = new Dictionary<string, string>();
+            public Dictionary<string, string> EnvVars = new Dictionary<string, string>();
+            public Dictionary<string, string> LocalVars = new Dictionary<string, string>();
             //public string EnvVarPathToPrepend;
             //public string EnvVarPathToAppend;
             //public string PriorityClass; // idle, belownormal, normal, abovenormal, high, realtime; empty = normal

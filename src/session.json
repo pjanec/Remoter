@@ -5,7 +5,9 @@
     },
 
 	"Gateway": 	{
-		"IP": "10.0.102.5",
+		"ExternalIP": "10.0.102.5",
+		"InternalIP":  "192.168.0.150",
+		//"Port": 22,
 		//"UserName": "student",
 		//"Password": "Zaq1XSw2",
 	},
@@ -22,7 +24,7 @@
 
 			"Apps": [
 				{ "Name": "TightVNC Viewer"	},
-				{ "Name": "WinSCP" },
+				{  "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/100/" } },
 			]
 
 		},
@@ -37,7 +39,7 @@
 
 			"Apps": [
 				{ "Name": "TightVNC Viewer" },
-				{ "Name": "WinSCP" },
+				{  "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/101/" } },
 			]
 
 		},
@@ -53,20 +55,21 @@
 
 			"Apps": [
 				{ "Name": "TightVNC Viewer"	},
-				{ "Name": "WinSCP" },
+				{  "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/150/" } },
 			]
 
 		},
 		{
 			"Label": "110 - SIMSERVER - 2500",
-			"IP": "192.168.0.101",
+			"IP": "192.168.0.110",
 			"UserName": "administrator",
 			"Password": "Zaq1XSw2",
 
 			"Services": [
 				{ "Name": "VNC", "Port": 5900 },
 				{ "Name": "RDBG", "Port": 4024 },
-				{ "Name": "DIRIGENT", "Port": 5045 }
+				{ "Name": "DIRIGENT", "Port": 5045 },
+				{ "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/110/" } },
 			],
 
 			"Apps": [
@@ -74,7 +77,13 @@
 					"Name": "TightVNC Viewer"
 				},
 				{
-					"Name": "Dirigent Client"
+					"Name": "Dirigent Client",
+					"EnvVars": {
+						"VAR1": "EVAR-1"
+					},
+					"LocalVars": {
+						"VAR1": "LVAR-1"
+					}
 				}
 			]
 		}
