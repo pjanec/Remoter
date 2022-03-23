@@ -6,6 +6,8 @@ namespace Remoter
 {
 	public class Session
     {
+        public string Name;
+
         public Config.Session Conf;
 
         public Gateway Gateway;
@@ -19,6 +21,7 @@ namespace Remoter
         public Session( string fileName )
         {
             LoadSessionConfig( fileName );
+            Name = string.IsNullOrEmpty( Conf.Name ) ? System.IO.Path.GetFileNameWithoutExtension( fileName ) : Conf.Name;
         }
 
         public void Dispose()

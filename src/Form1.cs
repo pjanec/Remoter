@@ -25,12 +25,15 @@ namespace Remoter
 
         public void InitSession( string fileName )
         {
+            if( Session != null ) Session.Dispose();
             Session = new Session( fileName );
             ReloadFromSession();
         }
 
         public void ReloadFromSession()
         {
+            Text = $"Remoter - {Session.Name}";
+
             // computer name column
             grdComputers.Columns.Clear();
             {
@@ -114,11 +117,25 @@ namespace Remoter
 
         private void btnImport_Click(object sender, EventArgs e)
         {
+            var fn = Tools.PickFileToOpen(
+                "Open session file",
+				"session files (*.json)|*.json",
+                "" );
+            if( !string.IsNullOrEmpty( fn ) )
+            {
+                InitSession(fn);
+            }
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            InitSession("session.json");
+            const string defaultSessionFile = "session.json";
+            if( System.IO.File.Exists( defaultSessionFile ) )
+            {
+                InitSession( defaultSessionFile );
+            }
+
+            UpdateForwardingStatus();
         }
 
         private void grdComputers_MouseClick(object sender, MouseEventArgs e)
@@ -263,7 +280,10 @@ namespace Remoter
 
         void UpdateForwardingStatus()
 		{
+            btnStart.Enabled = Session != null;
+
             if( Session == null ) return;
+
             if( !_wasForwarderRunning && Session.IsPortForwarding )
             {
                 btnStart.Text = "Stop Fwd";
@@ -288,6 +308,7 @@ namespace Remoter
 
 		private void btnStart_Click( object sender, EventArgs e )
 		{
+            if( Session == null ) return;
             if( !Session.IsPortForwarding )
             {
                 Session?.Start();

@@ -26,6 +26,7 @@ namespace Remoter
 
         public class Session
         {
+            public string Name;
             public Credentials DefaultCredentials;
             public Gateway Gateway;
             public List<Computer> Computers;

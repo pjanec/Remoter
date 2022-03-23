@@ -229,6 +229,20 @@ namespace Remoter
 			return null;
 		}
 
+		public static string PickFileToOpen( string title, string filter, string folder )
+		{
+			var dlg = new System.Windows.Forms.OpenFileDialog(); 
+			dlg.Title = title;
+			dlg.Filter = filter; 
+			dlg.InitialDirectory = folder;
+			var res = dlg.ShowDialog(); 
+			if( res == System.Windows.Forms.DialogResult.OK )
+			{
+				return dlg.FileName;
+			}
+			return null;
+		}
+
 }
 
 }
