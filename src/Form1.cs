@@ -30,6 +30,8 @@ namespace Remoter
             ReloadFromSession();
         }
 
+        static int AppIconWidth = 20;
+
         public void ReloadFromSession()
         {
             Text = $"Remoter - {Session.Name}";
@@ -57,7 +59,7 @@ namespace Remoter
             {
                 var col = new System.Windows.Forms.DataGridViewImageColumn();
 			    col.FillWeight = 10F;
-			    col.MinimumWidth = 9;
+			    col.MinimumWidth = AppIconWidth;
 			    col.Name = $"Col{i+1}";
 			    col.HeaderText = "";
                 grdComputers.Columns.Add( col );
@@ -85,19 +87,18 @@ namespace Remoter
 
                         if( activateApp )
                         {
-                            items[gridCol] = Tools.ResizeImage( new Bitmap(app.App.Image), new Size( 20, 20 ) );
+                            items[gridCol] = Tools.ResizeImage( new Bitmap(app.App.Image), new Size( AppIconWidth, AppIconWidth ) );
                             app.GridColIndex = gridCol;
                         }
                         else
                         {
-                            items[gridCol] = Tools.ResizeImage( new Bitmap( Resource1.Empty ), new Size( 20, 20 ) );
+                            items[gridCol] = Tools.ResizeImage( new Bitmap( Resource1.Empty ), new Size( AppIconWidth, AppIconWidth ) );
                             app.GridColIndex = -1; // do not respond to clicks
                         }
                     }
                     else
                     {
-                        items[gridCol] = Tools.ResizeImage( new Bitmap( Resource1.Empty ), new Size( 20, 20 ) );
-                        app.GridColIndex = -1; // do not respond to clicks
+                        items[gridCol] = Tools.ResizeImage( new Bitmap( Resource1.Empty ), new Size( AppIconWidth, AppIconWidth ) );
                     }
 
                     gridCol++;
@@ -129,7 +130,14 @@ namespace Remoter
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            const string defaultSessionFile = "session.json";
+            string defaultSessionFile = "session.json";
+
+            // take session file from the first cmd line argument
+            string[] args = Environment.GetCommandLineArgs();
+            if( args.Length > 1 )
+                defaultSessionFile = args[1];
+
+            // load it if it exists
             if( System.IO.File.Exists( defaultSessionFile ) )
             {
                 InitSession( defaultSessionFile );

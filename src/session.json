@@ -1,5 +1,5 @@
 {
-    "Name": "My Session",
+    "Name": "Multi-drill Test Env",
 
     "DefaultCredentials": {
 		"UserName": "student",
@@ -21,12 +21,11 @@
 
 			"Services": [
 				{ "Name": "VNC", "Port": 5900 },
-				{ "Name": "SSH", "Port": 22 },
 			],
 
 			"Apps": [
 				{ "Name": "TightVNC Viewer"	},
-				{  "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/100/" } },
+				{ "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/100/" } },
 			]
 
 		},
@@ -46,6 +45,20 @@
 
 		},
 
+		{
+			"Label": "120 - CgfXDD - 0",
+			"IP": "192.168.0.120",
+
+			"Services": [
+				{ "Name": "VNC", "Port": 5900 },
+			],
+
+			"Apps": [
+				{ "Name": "TightVNC Viewer"	},
+				{ "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/120/" } },
+			]
+
+		},
 		{
 			"Label": "150 - MainIOS - SimHost - 2501",
 			"IP": "192.168.0.150",
@@ -69,24 +82,15 @@
 
 			"Services": [
 				{ "Name": "VNC", "Port": 5900 },
+				{ "Name": "RDP", "Port": 3398 },
 				{ "Name": "RDBG", "Port": 4024 },
 				{ "Name": "DIRIGENT", "Port": 5045 },
-				{ "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/110/" } },
 			],
 
 			"Apps": [
-				{
-					"Name": "TightVNC Viewer"
-				},
-				{
-					"Name": "Dirigent Client",
-					"EnvVars": {
-						"VAR1": "EVAR-1"
-					},
-					"LocalVars": {
-						"VAR1": "LVAR-1"
-					}
-				}
+				{ "Name": "TightVNC Viewer"	},
+				{ "Name": "Remote Desktop Client" },
+				{ "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/110/" } },
 			]
 		}
 	]
