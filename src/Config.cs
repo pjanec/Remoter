@@ -47,7 +47,9 @@ namespace Remoter
 
         public class Computer
         {
-            public string Label;
+            public string Group; // for display & sorting
+            public string Station; // for display & sorting
+            public string Label;  // for display & sorting
             public string IP; // internal ip (accessible from inner network)
             public string UserName;
             public string Password;

@@ -37,7 +37,7 @@ namespace Remoter
 			sb.Append( $"{session.Gateway.ExternalIP} -P {session.Gateway.Port} -l {session.Gateway.UserName} -pw {session.Gateway.Password} -P 22 -no-antispoof ");
 			foreach( var comp in _session.Computers )
 			{
-				if( !comp.Conf.AlwaysLocal )
+				if( !comp.AlwaysLocal )
 				{
 					foreach( var svc in comp.Services )
 					{

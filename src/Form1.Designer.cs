@@ -65,7 +65,7 @@ namespace Remoter
 			this.grdComputers.Name = "grdComputers";
 			this.grdComputers.RowHeadersVisible = false;
 			this.grdComputers.RowHeadersWidth = 72;
-			this.grdComputers.Size = new System.Drawing.Size(524, 677);
+			this.grdComputers.Size = new System.Drawing.Size(482, 677);
 			this.grdComputers.TabIndex = 9;
 			this.grdComputers.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdComputers_CellEnter);
 			this.grdComputers.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.grdComputers_CellFormatting);
@@ -82,12 +82,12 @@ namespace Remoter
 			// btnStart
 			// 
 			this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnStart.Location = new System.Drawing.Point(422, 7);
+			this.btnStart.Location = new System.Drawing.Point(380, 7);
 			this.btnStart.Margin = new System.Windows.Forms.Padding(5);
 			this.btnStart.Name = "btnStart";
 			this.btnStart.Size = new System.Drawing.Size(114, 43);
 			this.btnStart.TabIndex = 10;
-			this.btnStart.Text = "Start";
+			this.btnStart.Text = "Connect";
 			this.btnStart.UseVisualStyleBackColor = true;
 			this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
 			// 
@@ -101,7 +101,7 @@ namespace Remoter
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(550, 751);
+			this.ClientSize = new System.Drawing.Size(508, 751);
 			this.Controls.Add(this.btnStart);
 			this.Controls.Add(this.grdComputers);
 			this.Controls.Add(this.btnLoad);

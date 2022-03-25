@@ -14,7 +14,12 @@ namespace Remoter
 {
 	public partial class frmMain : Form
     {
-		const int gridColCompName = 0;
+        int gridColFirstApp;
+		int gridColIP;
+		int gridColGroup;
+		int gridColStation;
+		int gridColLabel;
+
 
 
         GlobalContext Context = new GlobalContext();
@@ -32,33 +37,80 @@ namespace Remoter
 
         static int AppIconWidth = 20;
 
+        string LastPartOfIP( string IP )
+        {
+            int lastDot = IP.LastIndexOf(".");
+            if(lastDot < 0 ) return IP;
+            return IP.Substring(lastDot+1);
+        }
+        
         public void ReloadFromSession()
         {
             Text = $"Remoter - {Session.Name}";
 
-            // computer name column
             grdComputers.Columns.Clear();
+
+            // IP - last part
             {
+                gridColIP = grdComputers.Columns.Count;
                 var col = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			    col.FillWeight = 50F;
-			    col.MinimumWidth = 100;
-			    col.Name = $"ComputerName";
-			    col.HeaderText = "Computer";
+			    col.FillWeight = 5F;
+			    col.MinimumWidth = 30;
+			    col.Name = $"IP";
+			    col.HeaderText = "IP";
+                col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; 
                 grdComputers.Columns.Add( col );
             }
 
-            // find the number of comulns needed - the highest amount of apps per computer
-            int maxCols = 0;
-            foreach( var comp in Computers )
+            // computer name
             {
-                if( comp.Apps.Count > maxCols )
-                    maxCols = comp.Apps.Count;
+                gridColLabel = grdComputers.Columns.Count;
+                var col = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			    col.FillWeight = 30F;
+			    col.MinimumWidth = 100;
+			    col.Name = $"Label";
+			    col.HeaderText = "Label";
+                grdComputers.Columns.Add( col );
             }
 
-            for( int i=0; i < maxCols; i++ )
+            // Station
+            {
+                gridColStation = grdComputers.Columns.Count;
+                var col = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			    col.FillWeight = 10F;
+			    col.MinimumWidth = 30;
+			    col.Name = $"Station";
+			    col.HeaderText = "Station";
+                col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; 
+                grdComputers.Columns.Add( col );
+            }
+
+            // Group
+            {
+                gridColGroup = grdComputers.Columns.Count;
+                var col = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			    col.FillWeight = 10F;
+			    col.MinimumWidth = 30;
+			    col.Name = $"Group";
+			    col.HeaderText = "Group";
+                //col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; 
+                grdComputers.Columns.Add( col );
+            }
+
+
+            // find the number of columns needed - the highest amount of apps per computer
+            gridColFirstApp = grdComputers.Columns.Count;
+            int numAppCols = 0;
+            foreach( var comp in Computers )
+            {
+                if( comp.Apps.Count > numAppCols )
+                    numAppCols = comp.Apps.Count;
+            }
+
+            for( int i=0; i < numAppCols; i++ )
             {
                 var col = new System.Windows.Forms.DataGridViewImageColumn();
-			    col.FillWeight = 10F;
+			    col.FillWeight = 5F;
 			    col.MinimumWidth = AppIconWidth;
 			    col.Name = $"Col{i+1}";
 			    col.HeaderText = "";
@@ -66,14 +118,18 @@ namespace Remoter
             }
 
             // on column per service app
+
             foreach( var comp in Computers )
             {
                 var items = new object[grdComputers.Columns.Count];
                 
-                items[gridColCompName] = $"{comp.Conf.Label}";
+                items[gridColIP] = $"{LastPartOfIP(comp.IP)}";
+                items[gridColGroup] = $"{comp.Group ?? string.Empty}";
+                items[gridColStation] = $"{comp.Station ?? string.Empty}";
+                items[gridColLabel] = $"{comp.Label ?? string.Empty}";
 
-                int gridCol = gridColCompName+1;
-                for( int i=0; i < maxCols; i++ )
+                int gridCol = gridColFirstApp;
+                for( int i=0; i < numAppCols; i++ )
                 {
                     GridApp app = i < comp.Apps.Count ? comp.Apps[i] : null;
 
@@ -231,7 +287,7 @@ namespace Remoter
 
             DataGridViewCell cell = this.grdComputers.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
-            if( e.ColumnIndex == gridColCompName )
+            if( e.ColumnIndex < gridColFirstApp )
             {
                 if( comp.IsRemote )
                 {
@@ -244,7 +300,7 @@ namespace Remoter
             }
             else
             {
-                int appIndex = e.ColumnIndex-1;
+                int appIndex = e.ColumnIndex - gridColFirstApp;
                 var app = appIndex < comp.Apps.Count ? comp.Apps[appIndex] : null;
                 if( app != null )
                 {

@@ -16,8 +16,10 @@
 
 	"Computers": [
 		{
-			"Label": "100 - MainIOS - SimHost",
+			"Label": "SimHost",
 			"IP": "192.168.0.100",
+			"Group": "G1",
+			"Station":  "1234",
 
 			"Services": [
 				{ "Name": "VNC", "Port": 5900 },
@@ -31,7 +33,7 @@
 		},
 
 		{
-			"Label": "101 - SinIG_1 - 2502",
+			"Label": "SinIG_1",
 			"IP": "192.168.0.100",
 
 			"Services": [
@@ -46,7 +48,7 @@
 		},
 
 		{
-			"Label": "120 - CgfXDD - 0",
+			"Label": "CgfXDD",
 			"IP": "192.168.0.120",
 
 			"Services": [
@@ -60,8 +62,9 @@
 
 		},
 		{
-			"Label": "150 - MainIOS - SimHost - 2501",
+			"Label": "MainIOS",
 			"IP": "192.168.0.150",
+			"Group": "G1",
 
 			"Services": [
 				{ "Name": "VNC", "Port": 5900 },
@@ -75,7 +78,7 @@
 
 		},
 		{
-			"Label": "110 - SIMSERVER - 2500",
+			"Label": "SIMSERVER",
 			"IP": "192.168.0.110",
 			"UserName": "administrator",
 			"Password": "Zaq1XSw2",

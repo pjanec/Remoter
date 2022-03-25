@@ -68,7 +68,7 @@ namespace Remoter
                         new Service(
                             comp,
                             // local
-                            comp.Conf.IP,
+                            comp.IP,
                             svcConf.Port,
                             // remote
                             "127.0.0.1",
