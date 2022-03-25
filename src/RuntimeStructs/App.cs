@@ -67,6 +67,8 @@ namespace Remoter
         static Launcher DefaultLauncherBuilder( Session session, Computer comp, App app )
         {
             var vars = new Dictionary<string,string>();
+
+            // set service-related variables
             var svc = comp.Services.Find( (x) => x.Name == app.Service );
             if( svc != null )
             {
@@ -74,11 +76,13 @@ namespace Remoter
                 vars["SVC_PORT"] = svc.Port.ToString();
                 vars["SVC_USERNAME"] = svc.UserName;
                 vars["SVC_PASSWORD"] = svc.Password;
-                vars["GW_IP"] = session.IsPortForwarding ? session.Gateway.ExternalIP : session.Gateway.InternalIP;
-                vars["GW_PORT"] = session.Gateway.Port.ToString();
-                vars["GW_USERNAME"] = session.Gateway.UserName;
-                vars["GW_PASSWORD"] = session.Gateway.Password;
             }
+
+            vars["GW_IP"] = session.IsPortForwarding ? session.Gateway.ExternalIP : session.Gateway.InternalIP;
+            vars["GW_PORT"] = session.Gateway.Port.ToString();
+            vars["GW_USERNAME"] = session.Gateway.UserName;
+            vars["GW_PASSWORD"] = session.Gateway.Password;
+
             vars["APP_NEW_GUID"] = Guid.NewGuid().ToString();
             return new Launcher( app.AppDef, Tools.AssemblyDirectory, vars );
         }

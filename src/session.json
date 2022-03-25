@@ -1,70 +1,27 @@
 {
-    "Name": "Multi-drill Test Env",
+    "Name": "My Session 2",
 
     "DefaultCredentials": {
-		"UserName": "student",
-		"Password": "Zaq1Xsw2"
+		"UserName": "user",
+		"Password": "password"
     },
 
 	"Gateway": 	{
 		"ExternalIP": "10.0.102.5",
 		"InternalIP":  "192.168.0.150",
 		//"Port": 22,
-		//"UserName": "student",
-		//"Password": "Zaq1XSw2",
+		//"UserName": "user",
+		//"Password": "password",
 	},
 
 	"Computers": [
-		{
-			"Label": "SimHost",
-			"IP": "192.168.0.100",
-			"Group": "G1",
-			"Station":  "1234",
 
-			"Services": [
-				{ "Name": "VNC", "Port": 5900 },
-			],
-
-			"Apps": [
-				{ "Name": "TightVNC Viewer"	},
-				{ "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/100/" } },
-			]
-
-		},
 
 		{
-			"Label": "SinIG_1",
-			"IP": "192.168.0.100",
-
-			"Services": [
-				{ "Name": "VNC", "Port": 5900 },
-			],
-
-			"Apps": [
-				{ "Name": "TightVNC Viewer" },
-				{  "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/101/" } },
-			]
-
-		},
-
-		{
-			"Label": "CgfXDD",
+			"Label": "CGFX-BE",
 			"IP": "192.168.0.120",
-
-			"Services": [
-				{ "Name": "VNC", "Port": 5900 },
-			],
-
-			"Apps": [
-				{ "Name": "TightVNC Viewer"	},
-				{ "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/120/" } },
-			]
-
-		},
-		{
-			"Label": "MainIOS",
-			"IP": "192.168.0.150",
-			"Group": "G1",
+			"Station": "0",
+			"Group": "Main",
 
 			"Services": [
 				{ "Name": "VNC", "Port": 5900 },
@@ -73,15 +30,35 @@
 
 			"Apps": [
 				{ "Name": "TightVNC Viewer"	},
-				{  "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/150/" } },
+				{ "Name": "WinSCP-GW", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/120/" } },
 			]
 
 		},
+
+		{
+			"Label": "SimHost",
+			"IP": "192.168.0.100",
+			"Station": "",
+			"Group": "Main",
+
+			"Services": [
+				{ "Name": "VNC", "Port": 5900 },
+			],
+
+			"Apps": [
+				{ "Name": "TightVNC Viewer"	},
+				{ "Name": "WinSCP-GW", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/100/" } },
+			]
+
+		},
+
 		{
 			"Label": "SIMSERVER",
 			"IP": "192.168.0.110",
+			"Station": "2500",
+			"Group": "",
 			"UserName": "administrator",
-			"Password": "Zaq1XSw2",
+			"Password": "password",
 
 			"Services": [
 				{ "Name": "VNC", "Port": 5900 },
@@ -92,9 +69,28 @@
 
 			"Apps": [
 				{ "Name": "TightVNC Viewer"	},
+				{ "Name": "WinSCP-GW", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/110/" } },
 				{ "Name": "Remote Desktop Client" },
-				{ "Name": "WinSCP", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/110/" } },
 			]
-		}
+		},
+
+		{
+			"Label": "MainIOS",
+			"IP": "192.168.0.150",
+			"Station": "2501",
+			"Group": "Main",
+
+			"Services": [
+				{ "Name": "VNC", "Port": 5900 },
+				{ "Name": "SSH", "Port": 22 },
+			],
+
+			"Apps": [
+				{ "Name": "TightVNC Viewer"	},
+				{  "Name": "WinSCP-GW", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/150/" } },
+			]
+
+		},
+
 	]
 }

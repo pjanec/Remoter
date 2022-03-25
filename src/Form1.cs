@@ -78,7 +78,7 @@ namespace Remoter
                 gridColStation = grdComputers.Columns.Count;
                 var col = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			    col.FillWeight = 10F;
-			    col.MinimumWidth = 30;
+			    col.MinimumWidth = 50;
 			    col.Name = $"Station";
 			    col.HeaderText = "Station";
                 col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; 

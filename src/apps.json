@@ -25,7 +25,7 @@
       "StartupDir": ""
     },
     {
-      "Name": "WinSCP",
+      "Name": "WinSCP-GW",
       "IconFile": "Icons\\WinSCP.png",
       "Service": "SSH",
       "ExeFullPath": "C:\\Program Files (x86)\\WinSCP\\WinSCP.exe",
