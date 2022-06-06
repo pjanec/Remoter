@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Newtonsoft.Json;
 
@@ -17,6 +18,10 @@ namespace Remoter
 
         public bool IsPortForwarding => Forwarder.IsRunning;
 
+        /// <summary>
+        /// Last used file name
+        /// </summary>
+        public string FileName { get; private set; }
 
         public Session( string fileName )
         {
@@ -32,6 +37,7 @@ namespace Remoter
         
         void LoadSessionConfig( string fileName )
         {
+            FileName = fileName;
             Conf = JsonConvert.DeserializeObject<Config.Session>( System.IO.File.ReadAllText( fileName ) );
 
             Gateway = new Gateway()

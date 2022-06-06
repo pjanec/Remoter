@@ -35,6 +35,7 @@ namespace Remoter
 			this.CompName = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.btnStart = new System.Windows.Forms.Button();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
+			this.btnEdit = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.grdComputers)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -97,11 +98,23 @@ namespace Remoter
 			this.timer1.Interval = 500;
 			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
 			// 
+			// btnEdit
+			// 
+			this.btnEdit.Location = new System.Drawing.Point(136, 7);
+			this.btnEdit.Margin = new System.Windows.Forms.Padding(5);
+			this.btnEdit.Name = "btnEdit";
+			this.btnEdit.Size = new System.Drawing.Size(114, 43);
+			this.btnEdit.TabIndex = 11;
+			this.btnEdit.Text = "Edit";
+			this.btnEdit.UseVisualStyleBackColor = true;
+			this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(508, 751);
+			this.Controls.Add(this.btnEdit);
 			this.Controls.Add(this.btnStart);
 			this.Controls.Add(this.grdComputers);
 			this.Controls.Add(this.btnLoad);
@@ -121,6 +134,7 @@ namespace Remoter
 		private System.Windows.Forms.Button btnStart;
 		private System.Windows.Forms.DataGridViewTextBoxColumn CompName;
 		private System.Windows.Forms.Timer timer1;
+		private System.Windows.Forms.Button btnEdit;
 	}
 }
 

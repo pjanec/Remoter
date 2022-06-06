@@ -31,8 +31,15 @@ namespace Remoter
         public void InitSession( string fileName )
         {
             if( Session != null ) Session.Dispose();
-            Session = new Session( fileName );
-            ReloadFromSession();
+            try
+            {
+                Session = new Session( fileName );
+                ReloadFromSession();
+            }
+            catch( Exception ex )
+            {
+                MessageBox.Show($"Error initializing session. {ex}");
+            }
         }
 
         static int AppIconWidth = 20;
@@ -281,6 +288,28 @@ namespace Remoter
             Session?.Dispose();
 		}
 
+        private string GetInfo( Computer comp )
+        {
+            var sb = new StringBuilder();
+
+            if( comp.IsRemote )
+            {
+                sb.AppendLine( $"{comp.IP} (remote)" );
+            }
+            else
+            {
+                sb.AppendLine( $"{comp.IP} (local)" );
+            }
+
+            foreach( var svc in comp.Services )
+            {
+                sb.AppendLine( $"{svc.Name} {svc.IP}:{svc.Port} => {svc.NativeIP}:{svc.NativePort}" );
+            }
+
+            return sb.ToString();
+        }
+
+
 		private void grdComputers_CellFormatting( object sender, DataGridViewCellFormattingEventArgs e )
 		{
             var comp = Computers[e.RowIndex];
@@ -289,14 +318,7 @@ namespace Remoter
 
             if( e.ColumnIndex < gridColFirstApp )
             {
-                if( comp.IsRemote )
-                {
-                    cell.ToolTipText = $"{comp.IP} (remote)";
-            }
-                else
-                {
-                    cell.ToolTipText = $"{comp.IP} (local)";
-                }
+                cell.ToolTipText = GetInfo( comp );
             }
             else
             {
@@ -350,14 +372,14 @@ namespace Remoter
 
             if( !_wasForwarderRunning && Session.IsPortForwarding )
             {
-                btnStart.Text = "Stop Fwd";
+                btnStart.Text = "Disconnect";
                 _wasForwarderRunning = Session.IsPortForwarding;
                 ForwardingStatusChanged();
             }
             else
             if( _wasForwarderRunning && !Session.IsPortForwarding )
             {
-                btnStart.Text = "Start Fwd";
+                btnStart.Text = "Connect";
                 _wasForwarderRunning = Session.IsPortForwarding;
                 ForwardingStatusChanged();
             }
@@ -388,6 +410,14 @@ namespace Remoter
             UpdateForwardingStatus();
 		}
 
+		private void btnEdit_Click( object sender, EventArgs e )
+		{
+            if( Session != null )
+            {
+			    var url = Session.FileName;
+			    System.Diagnostics.Process.Start( new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
+            }
+		}
 	}
 
 }
