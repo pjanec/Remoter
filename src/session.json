@@ -14,8 +14,36 @@
 		//"Password": "password",
 	},
 
+	"ComputerTemplates": [
+		{
+			"Label": "T1",
+			"Group": "",
+			"UserName": "administrator",
+			"Password": "Zaq1XSw2",
+
+			"Services": [
+				{ "Name": "VNC", "Port": 5900 },
+				{ "Name": "RDP", "Port": 3398 },
+				{ "Name": "RDBG", "Port": 4024 },
+				{ "Name": "DIRIGENT", "Port": 5045 },
+			],
+
+			"Apps": [
+				{ "Name": "TightVNC Viewer", "LocalVars" : { "OPTIONS": "-viewonly" }},
+				{ "Name": "WinSCP-GW", "LocalVars" : { "REMOTE_PATH": "C:/IT/Links/%COMP_IP%/" } },
+				{ "Name": "Remote Desktop Client" },
+			]
+		},
+	],
+		
 	"Computers": [
 
+		{
+			"Template": "T1",
+			"Label": "SIMSERVER",
+			"IP": "192.168.104.110",
+			"Station": "2500",
+		},
 
 		{
 			"Label": "CGFX-BE",

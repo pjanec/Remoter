@@ -4,8 +4,8 @@
       "Name": "TightVNC Viewer",
       "IconFile": "Icons\\VNC.png",
       "Service": "VNC",
-      "ExeFullPath": "C:\\Program Files\\TightVNC\\tvnviewer_mouse_pan_zoom.exe",
-      "CmdLineArgs": "%SVC_IP%:%SVC_PORT%",
+      "ExeFullPath": "C:\\Program Files\\TightVNC\\tvnviewer.exe",
+      "CmdLineArgs": "%SVC_IP%:%SVC_PORT% %OPTIONS%",
       "StartupDir": ""
     },
     {
@@ -38,9 +38,9 @@
       "Name": "Dirigent Client",
       "IconFile": "Icons\\Dirigent.png",
       "Service": "DIRIGENT",
-      "ExeFullPath": "D:\\Work\\BIG\\Dist\\BIG_DistRepo\\Tools\\Dirigent\\Dirigent.Agent.exe",
-      "CmdLineArgs": "--masterIp %SVC_IP% --masterPort %SVC_PORT% --isMaster 0 --mode trayGui --machineId %COMPUTERNAME%_%NEW_GUID%",
-      "StartupDir": ""
+      "ExeFullPath": "D:\\Work\\Dirigent.NetCore\\src\\Dirigent.Agent.WinForms\\bin\\Debug\\net6.0-windows\\Dirigent.Agent.exe",
+      "CmdLineArgs": "--masterIp %SVC_IP% --masterPort %SVC_PORT% --isMaster 0 --mode gui --machineId %COMPUTERNAME%_%NEW_GUID% --localConfigFile DirigentLocalConfig.xml --logFile dirigent-agent.log",
+      "StartupDir": "D:\\Work\\Remoter\\src"
     },
     {
       "Name": "plink",

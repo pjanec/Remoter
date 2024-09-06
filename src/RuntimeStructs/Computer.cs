@@ -12,7 +12,7 @@ namespace Remoter
         public string Password;
 
         public bool IsRemote => _isRemoteFunc();
-        public bool AlwaysLocal => Conf.AlwaysLocal;
+        public bool AlwaysLocal => Conf.AlwaysLocal??false;
         public string Label => Conf.Label;
         
         public string Station => Conf.Station;

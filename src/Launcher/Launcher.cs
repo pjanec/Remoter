@@ -92,7 +92,7 @@ namespace Remoter
             // add the local variables from appdef
             foreach( var kv in appDef.LocalVarsToSet )
             {
-                res[kv.Key] = kv.Value;
+                res[kv.Key] = Tools.ExpandInternalVars(kv.Value, internalVars, true);
             }
 
             return res;

@@ -53,7 +53,10 @@ namespace Remoter
         
         public void ReloadFromSession()
         {
-            Text = $"Remoter - {Session.Name}";
+            // get assembly version
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+
+            Text = $"Remoter {version} - {Session.Name}";
 
             grdComputers.Columns.Clear();
 

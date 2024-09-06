@@ -83,6 +83,11 @@ namespace Remoter
             vars["GW_USERNAME"] = session.Gateway.UserName;
             vars["GW_PASSWORD"] = session.Gateway.Password;
 
+            vars["COMP_IP"] = comp.IP;
+            vars["COMP_STATION"] = comp.Station;
+            vars["COMP_USERNAME"] = comp.UserName;
+            vars["COMP_PASSWORD"] = comp.Password;
+
             vars["APP_NEW_GUID"] = Guid.NewGuid().ToString();
             return new Launcher( app.AppDef, Tools.AssemblyDirectory, vars );
         }

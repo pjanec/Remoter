@@ -29,6 +29,7 @@ namespace Remoter
             public string Name;
             public Credentials DefaultCredentials;
             public Gateway Gateway;
+            public List<Computer> ComputerTemplates;
             public List<Computer> Computers;
         }
 
@@ -42,11 +43,19 @@ namespace Remoter
             public int Port;
             public string UserName;
             public string Password;
+
+            public void Merge( Service other )
+            {
+                if( other.UserName != null ) UserName = other.UserName;
+				if( other.Password != null ) Password = other.Password;
+                if( other.Port != 0 ) Port = other.Port;
+			}
         }
 
 
         public class Computer
         {
+            public string Template; // Label of a template configuration
             public string Group; // for display & sorting
             public string Station; // for display & sorting
             public string Label;  // for display & sorting
@@ -58,7 +67,7 @@ namespace Remoter
             /// <summary>
             /// Is the IP not accessible directly but just via the gateway
             /// </summary>
-            public bool AlwaysLocal;
+            public bool? AlwaysLocal;
 
             /// <summary>
             /// What network services are running on the computer
@@ -71,6 +80,57 @@ namespace Remoter
             /// in such a case they can use the service IP and port (forwarded one of the computer is behind a gateway)
             /// </summary>
             public List<App> Apps = new List<App>(); // just those configured in the config
+
+
+            public Computer Clone()
+			{
+				var res = new Computer();
+				res.Merge( this );
+				return res;
+			}
+            
+            public void Merge( Computer other )
+			{
+                if( other.Group != null ) Group = other.Group;
+                if( other.Station != null ) Station = other.Station;
+				if( other.Label != null ) Label = other.Label;
+				if( other.IP != null ) IP = other.IP;
+				if( other.UserName != null ) UserName = other.UserName;
+				if( other.Password != null ) Password = other.Password;
+				if( other.AlwaysLocal.HasValue ) AlwaysLocal = other.AlwaysLocal;
+
+				if( other.Services != null )
+				{
+					foreach( var svc in other.Services )
+					{
+                        var found = Services.Find( (x) => x.Name == svc.Name );
+						if( found == null )
+						{
+							Services.Add( svc );
+						}
+                        else
+                        {
+                            found.Merge( svc );
+						}
+					}
+				}
+
+				if( other.Apps != null )
+				{
+					foreach( var app in other.Apps )
+					{
+                        var found = Apps.Find( (x) => x.Name == app.Name );
+						if( found == null )
+						{
+							Apps.Add( app );
+						}
+                        else
+						{
+							found.Merge( app );
+						}
+					}
+				}
+			}
         }
 
         /// <summary>
@@ -101,6 +161,36 @@ namespace Remoter
             //public string PriorityClass; // idle, belownormal, normal, abovenormal, high, realtime; empty = normal
             //public bool? KillTree;
             public bool? UseShellExecute;
+
+            public void Merge( App other )
+			{
+				if( other.Name != null ) Name = other.Name;
+                if( other.Service != null ) Service = other.Service;
+                if( other.ShowInLocalMode != null ) ShowInLocalMode = other.ShowInLocalMode;
+				if( other.ShowInPortFwdMode != null ) ShowInPortFwdMode = other.ShowInPortFwdMode;
+				if( other.IconFile != null ) IconFile = other.IconFile;
+				if( other.ExeFullPath != null ) ExeFullPath = other.ExeFullPath;
+				if( other.CmdLineArgs != null ) CmdLineArgs = other.CmdLineArgs;
+				if( other.StartupDir != null ) StartupDir = other.StartupDir;
+
+				if( other.EnvVars != null )
+				{
+					foreach( var kv in other.EnvVars )
+					{
+						EnvVars[kv.Key] = kv.Value;
+					}
+				}
+
+				if( other.LocalVars != null )
+				{
+					foreach( var kv in other.LocalVars )
+					{
+						LocalVars[kv.Key] = kv.Value;
+					}
+				}
+
+				if( other.UseShellExecute != null ) UseShellExecute = other.UseShellExecute;
+			}
         }
 
     }

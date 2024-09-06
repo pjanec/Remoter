@@ -50,10 +50,12 @@ namespace Remoter
             };
 
 
-            foreach( var compConf in Conf.Computers )
+            foreach( var conf in Conf.Computers )
             {
+                var compConf = ResolveTemplate(conf);
+
                 var comp = new Computer(
-                    () => Forwarder.IsRunning ? !compConf.AlwaysLocal : false  // if forwarder not working, consider all computers local
+                    () => Forwarder.IsRunning ? !(compConf.AlwaysLocal??false) : false  // if forwarder not working, consider all computers local
                 )
                 {
                     Conf = compConf,
@@ -115,6 +117,19 @@ namespace Remoter
 
             Forwarder = new Forwarder( this );
         }
+
+        Config.Computer ResolveTemplate( Config.Computer conf )
+        {
+            if( conf.Template == null ) return conf;
+
+			var templ = Conf.ComputerTemplates.Find( (x) => x.Label == conf.Template );
+			if( templ == null ) return conf;
+
+			var res = templ.Clone();
+			res.Merge( conf );
+			return res;
+        }
+
 
         void KillApps()
         {
