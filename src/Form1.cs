@@ -44,13 +44,6 @@ namespace Remoter
 
         static int AppIconWidth = 20;
 
-        string LastPartOfIP( string IP )
-        {
-            int lastDot = IP.LastIndexOf(".");
-            if(lastDot < 0 ) return IP;
-            return IP.Substring(lastDot+1);
-        }
-        
         public void ReloadFromSession()
         {
             // get assembly version
@@ -65,7 +58,7 @@ namespace Remoter
                 gridColIP = grdComputers.Columns.Count;
                 var col = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			    col.FillWeight = 5F;
-			    col.MinimumWidth = 30;
+			    col.MinimumWidth = 100;
 			    col.Name = $"IP";
 			    col.HeaderText = "IP";
                 col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; 
@@ -100,7 +93,7 @@ namespace Remoter
                 gridColGroup = grdComputers.Columns.Count;
                 var col = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			    col.FillWeight = 10F;
-			    col.MinimumWidth = 30;
+			    col.MinimumWidth = 50;
 			    col.Name = $"Group";
 			    col.HeaderText = "Group";
                 //col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight; 
@@ -133,7 +126,7 @@ namespace Remoter
             {
                 var items = new object[grdComputers.Columns.Count];
                 
-                items[gridColIP] = $"{LastPartOfIP(comp.IP)}";
+                items[gridColIP] = $"{comp.IP}";
                 items[gridColGroup] = $"{comp.Group ?? string.Empty}";
                 items[gridColStation] = $"{comp.Station ?? string.Empty}";
                 items[gridColLabel] = $"{comp.Label ?? string.Empty}";
